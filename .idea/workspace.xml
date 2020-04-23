@@ -6,6 +6,17 @@
   <component name="ProjectId" id="1axSMBMtCfvdm4fGTWa10TpU0PS" />
   <component name="PropertiesComponent">
     <property name="RunOnceActivity.ShowReadmeOnStart" value="true" />
+    <property name="SHARE_PROJECT_CONFIGURATION_FILES" value="true" />
     <property name="WebServerToolWindowFactoryState" value="true" />
+  </component>
+  <component name="WindowStateProjectService">
+    <state x="403" y="110" key="CommitChangelistDialog2" timestamp="1587675746259">
+      <screen x="0" y="0" width="1680" height="1050" />
+    </state>
+    <state x="403" y="110" key="CommitChangelistDialog2/0.0.1680.1050@0.0.1680.1050" timestamp="1587675746259" />
+    <state x="440" y="266" key="Vcs.Push.Dialog.v2" timestamp="1587675754396">
+      <screen x="0" y="0" width="1680" height="1050" />
+    </state>
+    <state x="440" y="266" key="Vcs.Push.Dialog.v2/0.0.1680.1050@0.0.1680.1050" timestamp="1587675754396" />
   </component>
 </project>
