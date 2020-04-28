@@ -1,6 +1,10 @@
 
 #Step 1: Install
 #$ pip install selenium
+
+#brew cask upgrade && brew upgrade && brew cleanup
+
+
 #$  brew tap homebrew/cask-cask
 #$ brew cask install chromedriver
 
