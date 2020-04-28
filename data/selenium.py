@@ -2,6 +2,12 @@
 #Step 1: Install
 #$ pip install selenium
 
+#https://www.swtestacademy.com/install-chrome-driver-on-mac/
+
+
+
+
+
 #brew cask upgrade && brew upgrade && brew cleanup
 
 
