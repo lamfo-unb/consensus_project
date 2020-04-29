@@ -1,14 +1,29 @@
 ##BGigin here
+import tempfile
 from selenium import webdriver
+from selenium.webdriver.support.ui import WebDriverWait
+from selenium.webdriver.support import expected_conditions as EC
+from selenium.webdriver.common.by import By
+import pandas as pd
+import zipfile
+import glob
 from PIL import Image
 from io import BytesIO
 from data import deathbycaptcha
 import time
 
-#initializite the driver
-driver = webdriver.Chrome(executable_path='/usr/local/bin/chromedriver')
+#Create the tempfile
+tmp_path = tempfile.mkdtemp()
+options = webdriver.ChromeOptions()
+options.add_argument("download.default_directory="+tmp_path)
+prefs = {'download.default_directory' : tmp_path};
+options.add_experimental_option('prefs', prefs)
 
+#initializite the driver
+driver = webdriver.Chrome(options=options)
+delay = 3 # seconds
 driver.get("http://fundamentus.com.br/balancos.php?papel=PETR4")
+WebDriverWait(driver, delay).until(EC.presence_of_element_located((By.ID, 'containerMenu')))
 #Screen shot
 element = driver.find_element_by_class_name("captcha")
 #Get location
@@ -28,14 +43,9 @@ im = Image.open(BytesIO(png))
 im = im.crop((230, 690, 630, 800)) # defines crop points
 im.save('captcha.png')
 
-
-
-#Sleep
-time.sleep(10)
-
 #Send the captcha to the DeathByCaptcha
 username = "pedrobsb"
-password= "******"
+password= "*********"
 
 #Send the captcha
 client = deathbycaptcha.SocketClient(username, password)
@@ -56,94 +66,27 @@ button = driver.find_element("name", "submit")
 #Click the button
 button.click()
 
-
-
-
-
-
-
-
-try:
-    balance = client.get_balance()
-
-    # Put your CAPTCHA file name or file-like object, and optional
-    # solving timeout (in seconds) here:
-    captcha = client.decode("captcha.png", 15)
-    if captcha:
-        # The CAPTCHA was solved; captcha["captcha"] item holds its
-        # numeric ID, and captcha["text"] item its text.
-        print("CAPTCHA %s solved: %s" % (captcha["captcha"], captcha["text"]))
-
-        if ...:  # check if the CAPTCHA was incorrectly solved
-            client.report(captcha["captcha"])
-except deathbycaptcha.AccessDeniedException:
-    # Access to DBC API denied, check your credentials and/or balance
-
-
-#driver.quit()
-
-
-
-
-
-/html/body/div[1]/div[2]/form/img
-
-
-
-
-
-driver.find_element_by_id('search_form_input_homepage').send_keys("realpython")
-driver.find_element_by_id("search_button_homepage").click()
-print(driver.current_url)
+#Sleep and wait for the download
+time.sleep(2)
+driver.close()
 driver.quit()
 
-# Inicia o servidor
-startServer(args=c(
-    paste("-Dwebdriver.chrome.driver=", getwd(), "/chromedriver.exe -Dwebdriver.chrome.args='--disable-logging'",
-          sep="")), log=FALSE, invisible=FALSE)
-remDr < - remoteDriver(browserName="chrome")
+#Extract the zip file
+zip_file = glob.glob(tmp_path+"/"+"*.zip")
 
-# Abre o navegador
-remDr$open()
+#Sleep and wait for zip extract
+time.sleep(2)
 
-# Maximiza a janela
-remDr$maxWindowSize()
+with zipfile.ZipFile(zip_file[0], 'r') as zip_ref:
+    zip_ref.extractall(tmp_path+"/")
 
-# Vai para a pagina de interesse
-site < -"http://fundamentus.com.br/balancos.php?papel=PETR4"
-remDr$navigate(site)
+#Sleep and wait for zip extract
+time.sleep(2)
 
-# Faz um printscreen do site
-library(base64enc)
-img < -remDr$screenshot(display=FALSE, useViewer=TRUE, file=NULL)
-writeBin(base64Decode(img, "raw"), 'teste.png')
+#List all XLS files
+xls_file = glob.glob(tmp_path+"/"+"*.xls")
 
-# Recorta o captcha
-library(installr)
-# install.ImageMagick()
-local < -system("where convert", intern=TRUE)
-system('"C:/Program Files/ImageMagick-6.9.0-Q16/convert.exe" -crop 202x62+475+340 teste.png teste2.png', intern=TRUE)
-
-# Usa o DeathByCaptcha http://static.deathbycaptcha.com/files/dbc_api_v4_2_wincli.zip
-system(paste("deathbycaptcha.exe -l pedrobsb -p pedroh -c ", getwd(), "/teste2.png", " -t 60", sep=""))
-txt < -scan("answer.txt", what="character")
-
-# Encontra o objeto da caixa de texto
-webElem < - remDr$findElement(using="name", "codigo_captcha")
-
-# Manda o resultado dp captcha
-webElem$sendKeysToElement(list(txt))
-
-# Executa o botao
-webElem$sendKeysToElement(list(initializing_parcel_number, key="enter"))
-
-# Encontra o objeto da caixa de texto
-webElem < - remDr$findElement(using="name", "submit")
-
-# Clica no botao
-webElem$clickElement()
-
-# Fecha as conexoes
-remDr$close()
-remDr$closeServer()
+#Read all sheets in a PandasDataFrame
+sheet1 = pd.read_excel(xls_file[0], sheet_name=0, header=None, skiprows = 1)
+print(sheet1.head())
 
