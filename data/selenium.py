@@ -1,11 +1,12 @@
 ##BGigin here
 from selenium import webdriver
-from selenium.webdriver.chrome.options import Options
 from PIL import Image
 from io import BytesIO
+from data import deathbycaptcha
+import time
 
 #initializite the driver
-driver = webdriver.Chrome()
+driver = webdriver.Chrome(executable_path='/usr/local/bin/chromedriver')
 
 driver.get("http://fundamentus.com.br/balancos.php?papel=PETR4")
 #Screen shot
@@ -26,6 +27,59 @@ im = Image.open(BytesIO(png))
 #im = im.crop((left, top, right, bottom)) # defines crop points
 im = im.crop((230, 690, 630, 800)) # defines crop points
 im.save('captcha.png')
+
+
+
+#Sleep
+time.sleep(10)
+
+#Send the captcha to the DeathByCaptcha
+username = "pedrobsb"
+password= "******"
+
+#Send the captcha
+client = deathbycaptcha.SocketClient(username, password)
+captcha = client.decode("captcha.png", 15)
+
+#Get the solution
+solution = captcha["text"]
+
+#Find the text box
+web_elem = driver.find_element("name", "codigo_captcha")
+
+#Send the captcha results
+web_elem.send_keys(solution)
+
+#Request the data
+button = driver.find_element("name", "submit")
+
+#Click the button
+button.click()
+
+
+
+
+
+
+
+
+try:
+    balance = client.get_balance()
+
+    # Put your CAPTCHA file name or file-like object, and optional
+    # solving timeout (in seconds) here:
+    captcha = client.decode("captcha.png", 15)
+    if captcha:
+        # The CAPTCHA was solved; captcha["captcha"] item holds its
+        # numeric ID, and captcha["text"] item its text.
+        print("CAPTCHA %s solved: %s" % (captcha["captcha"], captcha["text"]))
+
+        if ...:  # check if the CAPTCHA was incorrectly solved
+            client.report(captcha["captcha"])
+except deathbycaptcha.AccessDeniedException:
+    # Access to DBC API denied, check your credentials and/or balance
+
+
 #driver.quit()
 
 
@@ -92,3 +146,4 @@ webElem$clickElement()
 # Fecha as conexoes
 remDr$close()
 remDr$closeServer()
+
