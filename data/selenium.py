@@ -88,5 +88,22 @@ xls_file = glob.glob(tmp_path+"/"+"*.xls")
 
 #Read all sheets in a PandasDataFrame
 sheet1 = pd.read_excel(xls_file[0], sheet_name=0, header=None, skiprows = 1)
-print(sheet1.head())
+
+#get column names
+colnames  = sheet1.iloc[0,:]
+colnames.iloc[0] = "Data"
+#get rownames
+rownames = sheet1.iloc[:,0]
+#Delete the first row
+sheet1 = sheet1.drop(sheet1.index[0])
+#Delete the first column
+sheet1 = sheet1.drop(sheet1.columns[0], axis=1)
+#Transpose the data
+sheet1_transposed = sheet1.T
+#Define the column names
+print(sheet1_transposed)
+sheet1_transposed.columns = rownames[1:]
+#Define the rownames names
+sheet1_transposed.index = pd.to_datetime(colnames[1:],)
+
 
