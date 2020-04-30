@@ -92,7 +92,8 @@
       <workItem from="1588171989769" duration="4571000" />
       <workItem from="1588217311031" duration="1555000" />
       <workItem from="1588254345171" duration="1967000" />
-      <workItem from="1588258732862" duration="3957000" />
+      <workItem from="1588258732862" duration="3979000" />
+      <workItem from="1588265101596" duration="2143000" />
     </task>
     <task id="LOCAL-00001" summary="Configure Selenium">
       <created>1588047189021</created>
@@ -171,7 +172,14 @@
       <option name="project" value="LOCAL" />
       <updated>1588261970074</updated>
     </task>
-    <option name="localTasksCounter" value="12" />
+    <task id="LOCAL-00012" summary="Argpaser code">
+      <created>1588263529304</created>
+      <option name="number" value="00012" />
+      <option name="presentableId" value="LOCAL-00012" />
+      <option name="project" value="LOCAL" />
+      <updated>1588263529304</updated>
+    </task>
+    <option name="localTasksCounter" value="13" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -187,13 +195,14 @@
     <MESSAGE value="Create the argpaser" />
     <MESSAGE value="Create the pipeline" />
     <MESSAGE value="Argpaser script" />
-    <option name="LAST_COMMIT_MESSAGE" value="Argpaser script" />
+    <MESSAGE value="Argpaser code" />
+    <option name="LAST_COMMIT_MESSAGE" value="Argpaser code" />
   </component>
   <component name="WindowStateProjectService">
-    <state x="403" y="110" key="CommitChangelistDialog2" timestamp="1588261969893">
+    <state x="403" y="110" key="CommitChangelistDialog2" timestamp="1588263529118">
       <screen x="0" y="0" width="1680" height="1050" />
     </state>
-    <state x="403" y="110" key="CommitChangelistDialog2/0.0.1680.1050@0.0.1680.1050" timestamp="1588261969893" />
+    <state x="403" y="110" key="CommitChangelistDialog2/0.0.1680.1050@0.0.1680.1050" timestamp="1588263529118" />
     <state width="1638" height="354" key="GridCell.Tab.0.bottom" timestamp="1588129592579">
       <screen x="0" y="0" width="1680" height="1050" />
     </state>

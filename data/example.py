@@ -5,7 +5,7 @@ from selenium import webdriver
 from selenium.webdriver.support.ui import WebDriverWait
 from selenium.webdriver.support import expected_conditions as EC
 from selenium.webdriver.common.by import By
-import pandas as pd
+
 import zipfile
 import glob
 from PIL import Image
@@ -13,7 +13,10 @@ from io import BytesIO
 import deathbycaptcha
 import time
 import pickle
-
+from pathlib import Path
+import warnings
+warnings.simplefilter(action='ignore', category=FutureWarning)
+import pandas as pd
 
 def main():
     parser = argparse.ArgumentParser()
@@ -29,7 +32,7 @@ def main():
                         help='Number of atempts to solve the captcha.')
     parser.add_argument('-l', '--left', type=float, default=230,
                         help='Left position crop captcha.')
-    parser.add_argument('-w', '--upper', type=float, default=630,
+    parser.add_argument('-w', '--upper', type=float, default=680,
                         help='Top position crop captcha.')
     parser.add_argument('-r', '--right', type=float, default=630,
                         help='Right position crop captcha.')
@@ -45,7 +48,7 @@ def main():
 def data_scrapping(args):
     #Step 1: Read the CSV and run all over the companies
     symbols = pd.read_csv(args.symbol)
-    df_results = []
+    df_results = {}
     for sym in symbols["Symbols"]:
         local_attempt = 0
         empty = True
@@ -67,7 +70,7 @@ def data_scrapping(args):
             png = driver.get_screenshot_as_png()
             # Cut the image
             im = Image.open(BytesIO(png))
-            # TODO Get the location automatically
+            # TODO Get the location automatically (https://stackoverflow.com/questions/15018372/how-to-take-partial-screenshot-with-selenium-webdriver-in-python)
             im = im.crop((args.left, args.upper, args.right, args.bottom))  # defines crop points
             im.save('captcha.png')
             # Send the captcha to the DeathByCaptcha
@@ -76,60 +79,68 @@ def data_scrapping(args):
             # Send the captcha
             client = deathbycaptcha.SocketClient(username, password)
             captcha = client.decode("captcha.png", 15)
-            # Get the solution
-            solution = captcha["text"]
-            # Find the text box
-            web_elem = driver.find_element("name", "codigo_captcha")
-            # Send the captcha results
-            web_elem.send_keys(solution)
-            # Request the data
-            button = driver.find_element("name", "submit")
-            # Click the button
-            button.click()
-            # Sleep and wait for the download
+            if captcha is not None:
+                # Get the solution
+                solution = captcha["text"]
+                # Find the text box
+                web_elem = driver.find_element("name", "codigo_captcha")
+                # Send the captcha results
+                web_elem.send_keys(solution)
+                # Request the data
+                button = driver.find_element("name", "submit")
+                # Click the button
+                button.click()
+                # Sleep and wait for the download
+                time.sleep(args.time)
+                driver.close()
+                driver.quit()
+
+                #Extract the zip file
+                zip_file = glob.glob(tmp_path + "/" + "*.zip")
+
+                #Make sure that something was downloaded
+                local_attempt = local_attempt + 1
+                if len(zip_file) > 0: empty = False
+            else:
+                empty = True
+                local_attempt = local_attempt + 1
+
+
+        #Get the name (bal_Empresa.zip)
+        if Path(zip_file[0]).name == "bal_Empresa.zip":
+            empty == True
+        else:
+            # Sleep and wait for zip extract
             time.sleep(args.time)
-            driver.close()
-            driver.quit()
+            with zipfile.ZipFile(zip_file[0], 'r') as zip_ref:
+                zip_ref.extractall(tmp_path + "/")
 
-            #Extract the zip file
-            zip_file = glob.glob(tmp_path + "/" + "*.zip")
+            # Sleep and wait for zip extract
+            time.sleep(args.time)
 
-            #Make sure that something was downloaded
-            local_attempt = local_attempt + 1
-            if len(zip_file) > 0: empty = False
+            # List all XLS files
+            xls_file = glob.glob(tmp_path + "/" + "*.xls")
 
-        # Sleep and wait for zip extract
-        time.sleep(args.time)
+            # Read all sheets in a PandasDataFrame
+            sheet1 = pd.read_excel(xls_file[0], sheet_name=0, header=None, skiprows=1)
 
-        with zipfile.ZipFile(zip_file[0], 'r') as zip_ref:
-            zip_ref.extractall(tmp_path + "/")
-
-        # Sleep and wait for zip extract
-        time.sleep(args.time)
-
-        # List all XLS files
-        xls_file = glob.glob(tmp_path + "/" + "*.xls")
-
-        # Read all sheets in a PandasDataFrame
-        sheet1 = pd.read_excel(xls_file[0], sheet_name=0, header=None, skiprows=1)
-
-        # get column names
-        colnames = sheet1.iloc[0, :]
-        colnames.iloc[0] = "Data"
-        # get rownames
-        rownames = sheet1.iloc[:, 0]
-        # Delete the first row
-        sheet1 = sheet1.drop(sheet1.index[0])
-        # Delete the first column
-        sheet1 = sheet1.drop(sheet1.columns[0], axis=1)
-        # Transpose the data
-        sheet1_transposed = sheet1.T
-        # Define the column names
-        sheet1_transposed.columns = rownames[1:]
-        # Define the rownames names
-        sheet1_transposed.index = pd.to_datetime(colnames[1:], )
-        #Save results
-        df_results.append(sheet1_transposed)
+            # get column names
+            colnames = sheet1.iloc[0, :]
+            colnames.iloc[0] = "Data"
+            # get rownames
+            rownames = sheet1.iloc[:, 0]
+            # Delete the first row
+            sheet1 = sheet1.drop(sheet1.index[0])
+            # Delete the first column
+            sheet1 = sheet1.drop(sheet1.columns[0], axis=1)
+            # Transpose the data
+            sheet1_transposed = sheet1.T
+            # Define the column names
+            sheet1_transposed.columns = rownames[1:]
+            # Define the rownames names
+            sheet1_transposed.index = pd.to_datetime(colnames[1:], )
+            #Save results
+            df_results[sym] = sheet1_transposed
         if empty == True:
             print("ERROR: Symbol: "+sym+" was not downloaded.")
         else:
@@ -140,6 +151,4 @@ def data_scrapping(args):
 if __name__ == '__main__':
     main()
 
-
-#https://pythonprogramming.net/argparse-cli-intermediate-python-tutorial/
 #python example.py --username=pedrobsb --password=****** --symbol=symbols.csv
