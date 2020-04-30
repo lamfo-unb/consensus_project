@@ -2,8 +2,12 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="c3476249-2ade-4940-8d8c-b2451b33d826" name="Default Changelist" comment="">
-      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/data/example.py" beforeDir="false" afterPath="$PROJECT_DIR$/data/example.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/data/README.md" beforeDir="false" afterPath="$PROJECT_DIR$/data_scraping/README.md" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/data/deathbycaptcha.py" beforeDir="false" afterPath="$PROJECT_DIR$/data_scraping/deathbycaptcha.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/data/example.py" beforeDir="false" afterPath="$PROJECT_DIR$/data_scraping/example.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/data/symbols.csv" beforeDir="false" afterPath="$PROJECT_DIR$/data_scraping/symbols.csv" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/data/test_selenium.py" beforeDir="false" afterPath="$PROJECT_DIR$/data_scraping/test_selenium.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/data/tickers_final.csv" beforeDir="false" afterPath="$PROJECT_DIR$/data_scraping/tickers_final.csv" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -93,7 +97,7 @@
       <workItem from="1588217311031" duration="1555000" />
       <workItem from="1588254345171" duration="1967000" />
       <workItem from="1588258732862" duration="3979000" />
-      <workItem from="1588265101596" duration="2143000" />
+      <workItem from="1588265101596" duration="2421000" />
     </task>
     <task id="LOCAL-00001" summary="Configure Selenium">
       <created>1588047189021</created>
@@ -179,7 +183,14 @@
       <option name="project" value="LOCAL" />
       <updated>1588263529304</updated>
     </task>
-    <option name="localTasksCounter" value="13" />
+    <task id="LOCAL-00013" summary="Datascrapping code">
+      <created>1588268883722</created>
+      <option name="number" value="00013" />
+      <option name="presentableId" value="LOCAL-00013" />
+      <option name="project" value="LOCAL" />
+      <updated>1588268883722</updated>
+    </task>
+    <option name="localTasksCounter" value="14" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -196,13 +207,14 @@
     <MESSAGE value="Create the pipeline" />
     <MESSAGE value="Argpaser script" />
     <MESSAGE value="Argpaser code" />
-    <option name="LAST_COMMIT_MESSAGE" value="Argpaser code" />
+    <MESSAGE value="Datascrapping code" />
+    <option name="LAST_COMMIT_MESSAGE" value="Datascrapping code" />
   </component>
   <component name="WindowStateProjectService">
-    <state x="403" y="110" key="CommitChangelistDialog2" timestamp="1588263529118">
+    <state x="403" y="110" key="CommitChangelistDialog2" timestamp="1588269085296">
       <screen x="0" y="0" width="1680" height="1050" />
     </state>
-    <state x="403" y="110" key="CommitChangelistDialog2/0.0.1680.1050@0.0.1680.1050" timestamp="1588263529118" />
+    <state x="403" y="110" key="CommitChangelistDialog2/0.0.1680.1050@0.0.1680.1050" timestamp="1588269085296" />
     <state width="1638" height="354" key="GridCell.Tab.0.bottom" timestamp="1588129592579">
       <screen x="0" y="0" width="1680" height="1050" />
     </state>

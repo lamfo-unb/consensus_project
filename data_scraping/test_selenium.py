@@ -9,7 +9,7 @@ import zipfile
 import glob
 from PIL import Image
 from io import BytesIO
-from data import deathbycaptcha
+from data_scraping import deathbycaptcha
 import time
 
 #Create the tempfile
@@ -60,7 +60,7 @@ web_elem = driver.find_element("name", "codigo_captcha")
 #Send the captcha results
 web_elem.send_keys(solution)
 
-#Request the data
+#Request the data_scraping
 button = driver.find_element("name", "submit")
 
 #Click the button
@@ -98,7 +98,7 @@ rownames = sheet1.iloc[:,0]
 sheet1 = sheet1.drop(sheet1.index[0])
 #Delete the first column
 sheet1 = sheet1.drop(sheet1.columns[0], axis=1)
-#Transpose the data
+#Transpose the data_scraping
 sheet1_transposed = sheet1.T
 #Define the column names
 print(sheet1_transposed)
