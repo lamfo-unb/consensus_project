@@ -10,8 +10,9 @@ import zipfile
 import glob
 from PIL import Image
 from io import BytesIO
-from data import deathbycaptcha
+import deathbycaptcha
 import time
+import pickle
 
 
 def main():
@@ -24,13 +25,15 @@ def main():
                         help='Username deathbycpatcha.')
     parser.add_argument('-p', '--password',
                         help='Pssword deathbycpatcha.')
+    parser.add_argument('-a','--attempts', type=int, default=3,
+                        help='Number of atempts to solve the captcha.')
     parser.add_argument('-l', '--left', type=float, default=230,
                         help='Left position crop captcha.')
-    parser.add_argument('-w', '--upper', type=float, default=690,
+    parser.add_argument('-w', '--upper', type=float, default=630,
                         help='Top position crop captcha.')
     parser.add_argument('-r', '--right', type=float, default=630,
                         help='Right position crop captcha.')
-    parser.add_argument('-b', '--bottom', type=float, default=800,
+    parser.add_argument('-b', '--bottom', type=float, default=780,
                         help='Bottom position crop captcha.')
 
     #Get arguments
@@ -43,56 +46,57 @@ def data_scrapping(args):
     #Step 1: Read the CSV and run all over the companies
     symbols = pd.read_csv(args.symbol)
     df_results = []
-    for sym in symbols:
-        # Create the tempfile
-        tmp_path = tempfile.mkdtemp()
-        options = webdriver.ChromeOptions()
-        options.add_argument("download.default_directory=" + tmp_path)
-        prefs = {'download.default_directory': tmp_path};
-        options.add_experimental_option('prefs', prefs)
-        # initializite the driver
-        driver = webdriver.Chrome(options=options)
-        delay = args.time
-        driver.get("http://fundamentus.com.br/balancos.php?papel="+str(sym))
-        #TODO: Make sure that the symbol exists
-        WebDriverWait(driver, delay).until(EC.presence_of_element_located((By.ID, 'containerMenu')))
-        # Screen shot
-        element = driver.find_element_by_class_name("captcha")
-        # Get location
-        location = element.location
-        # Get size
-        size = element.size
-        # Do the screen shot
-        png = driver.get_screenshot_as_png()
-        # Cut the image
-        im = Image.open(BytesIO(png))
-        # TODO Get the location automatically
-        im = im.crop((args.left, args.upper, args.right, args.bottom))  # defines crop points
-        im.save('captcha.png')
-        # Send the captcha to the DeathByCaptcha
-        username = args.username
-        password = args.password
-        # Send the captcha
-        client = deathbycaptcha.SocketClient(username, password)
-        captcha = client.decode("captcha.png", 15)
-        # Get the solution
-        solution = captcha["text"]
-        # Find the text box
-        web_elem = driver.find_element("name", "codigo_captcha")
-        # Send the captcha results
-        web_elem.send_keys(solution)
-        # Request the data
-        button = driver.find_element("name", "submit")
-        # Click the button
-        button.click()
-        # Sleep and wait for the download
-        time.sleep(args.time)
-        driver.close()
-        driver.quit()
-        #TODO: Make sure that some file was downloaded
+    for sym in symbols["Symbols"]:
+        local_attempt = 0
+        empty = True
+        while local_attempt < args.attempts and empty:
+            # Create the tempfile
+            tmp_path = tempfile.mkdtemp()
+            options = webdriver.ChromeOptions()
+            options.add_argument("download.default_directory=" + tmp_path)
+            prefs = {'download.default_directory': tmp_path};
+            options.add_experimental_option('prefs', prefs)
+            # initializite the driver
+            driver = webdriver.Chrome(options=options)
+            delay = args.time
+            driver.get("http://fundamentus.com.br/balancos.php?papel="+str(sym))
+            WebDriverWait(driver, delay).until(EC.presence_of_element_located((By.ID, 'containerMenu')))
+            # Screen shot
+            element = driver.find_element_by_class_name("captcha")
+            # Do the screen shot
+            png = driver.get_screenshot_as_png()
+            # Cut the image
+            im = Image.open(BytesIO(png))
+            # TODO Get the location automatically
+            im = im.crop((args.left, args.upper, args.right, args.bottom))  # defines crop points
+            im.save('captcha.png')
+            # Send the captcha to the DeathByCaptcha
+            username = args.username
+            password = args.password
+            # Send the captcha
+            client = deathbycaptcha.SocketClient(username, password)
+            captcha = client.decode("captcha.png", 15)
+            # Get the solution
+            solution = captcha["text"]
+            # Find the text box
+            web_elem = driver.find_element("name", "codigo_captcha")
+            # Send the captcha results
+            web_elem.send_keys(solution)
+            # Request the data
+            button = driver.find_element("name", "submit")
+            # Click the button
+            button.click()
+            # Sleep and wait for the download
+            time.sleep(args.time)
+            driver.close()
+            driver.quit()
 
-        # Extract the zip file
-        zip_file = glob.glob(tmp_path + "/" + "*.zip")
+            #Extract the zip file
+            zip_file = glob.glob(tmp_path + "/" + "*.zip")
+
+            #Make sure that something was downloaded
+            local_attempt = local_attempt + 1
+            if len(zip_file) > 0: empty = False
 
         # Sleep and wait for zip extract
         time.sleep(args.time)
@@ -121,17 +125,21 @@ def data_scrapping(args):
         # Transpose the data
         sheet1_transposed = sheet1.T
         # Define the column names
-        print(sheet1_transposed)
         sheet1_transposed.columns = rownames[1:]
         # Define the rownames names
         sheet1_transposed.index = pd.to_datetime(colnames[1:], )
         #Save results
         df_results.append(sheet1_transposed)
-        #TODO: Save the pickle file
-        #TODO: Create a log (or print the results)
+        if empty == True:
+            print("ERROR: Symbol: "+sym+" was not downloaded.")
+        else:
+            print("OK: Symbol: "+sym+" was downloaded.")
+
+    #Save the results
+    pickle.dump(df_results, open("resukts.pkl", "wb"))
 if __name__ == '__main__':
     main()
 
 
 #https://pythonprogramming.net/argparse-cli-intermediate-python-tutorial/
-#python example.py --time=5 --symbol=symbols.csv
+#python example.py --username=pedrobsb --password=Lamfo0751 --symbol=symbols.csv

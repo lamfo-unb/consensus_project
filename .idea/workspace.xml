@@ -2,9 +2,9 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="c3476249-2ade-4940-8d8c-b2451b33d826" name="Default Changelist" comment="">
-      <change afterPath="$PROJECT_DIR$/data/symbols.csv" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/data/example.py" beforeDir="false" afterPath="$PROJECT_DIR$/data/example.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/data/selenium.py" beforeDir="false" afterPath="$PROJECT_DIR$/data/test_selenium.py" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -45,7 +45,7 @@
     </key>
   </component>
   <component name="RunManager">
-    <configuration name="selenium" type="PythonConfigurationType" factoryName="Python" temporary="true" nameIsGenerated="true">
+    <configuration name="test_selenium" type="PythonConfigurationType" factoryName="Python" temporary="true" nameIsGenerated="true">
       <module name="consensus_project" />
       <option name="INTERPRETER_OPTIONS" value="" />
       <option name="PARENT_ENVS" value="true" />
@@ -58,7 +58,7 @@
       <option name="ADD_CONTENT_ROOTS" value="true" />
       <option name="ADD_SOURCE_ROOTS" value="true" />
       <EXTENSION ID="PythonCoverageRunConfigurationExtension" runner="coverage.py" />
-      <option name="SCRIPT_NAME" value="$PROJECT_DIR$/data/selenium.py" />
+      <option name="SCRIPT_NAME" value="$PROJECT_DIR$/data/test_selenium.py" />
       <option name="PARAMETERS" value="" />
       <option name="SHOW_COMMAND_LINE" value="false" />
       <option name="EMULATE_TERMINAL" value="false" />
@@ -69,7 +69,7 @@
     </configuration>
     <recent_temporary>
       <list>
-        <item itemvalue="Python.selenium" />
+        <item itemvalue="Python.test_selenium" />
       </list>
     </recent_temporary>
   </component>
@@ -93,7 +93,7 @@
       <workItem from="1588171989769" duration="4571000" />
       <workItem from="1588217311031" duration="1555000" />
       <workItem from="1588254345171" duration="1967000" />
-      <workItem from="1588258732862" duration="808000" />
+      <workItem from="1588258732862" duration="2806000" />
     </task>
     <task id="LOCAL-00001" summary="Configure Selenium">
       <created>1588047189021</created>
@@ -158,7 +158,14 @@
       <option name="project" value="LOCAL" />
       <updated>1588257782654</updated>
     </task>
-    <option name="localTasksCounter" value="10" />
+    <task id="LOCAL-00010" summary="Create the pipeline">
+      <created>1588259554100</created>
+      <option name="number" value="00010" />
+      <option name="presentableId" value="LOCAL-00010" />
+      <option name="project" value="LOCAL" />
+      <updated>1588259554100</updated>
+    </task>
+    <option name="localTasksCounter" value="11" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -172,13 +179,14 @@
     <MESSAGE value="Delete unused files" />
     <MESSAGE value="Data transposed" />
     <MESSAGE value="Create the argpaser" />
-    <option name="LAST_COMMIT_MESSAGE" value="Create the argpaser" />
+    <MESSAGE value="Create the pipeline" />
+    <option name="LAST_COMMIT_MESSAGE" value="Create the pipeline" />
   </component>
   <component name="WindowStateProjectService">
-    <state x="403" y="110" key="CommitChangelistDialog2" timestamp="1588257782379">
+    <state x="403" y="110" key="CommitChangelistDialog2" timestamp="1588259553877">
       <screen x="0" y="0" width="1680" height="1050" />
     </state>
-    <state x="403" y="110" key="CommitChangelistDialog2/0.0.1680.1050@0.0.1680.1050" timestamp="1588257782379" />
+    <state x="403" y="110" key="CommitChangelistDialog2/0.0.1680.1050@0.0.1680.1050" timestamp="1588259553877" />
     <state width="1638" height="354" key="GridCell.Tab.0.bottom" timestamp="1588129592579">
       <screen x="0" y="0" width="1680" height="1050" />
     </state>
