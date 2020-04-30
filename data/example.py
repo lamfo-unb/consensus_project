@@ -142,4 +142,4 @@ if __name__ == '__main__':
 
 
 #https://pythonprogramming.net/argparse-cli-intermediate-python-tutorial/
-#python example.py --username=pedrobsb --password=Lamfo0751 --symbol=symbols.csv
+#python example.py --username=pedrobsb --password=****** --symbol=symbols.csv
