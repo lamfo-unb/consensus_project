@@ -2,12 +2,11 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="c3476249-2ade-4940-8d8c-b2451b33d826" name="Default Changelist" comment="">
-      <change beforePath="$PROJECT_DIR$/data/README.md" beforeDir="false" afterPath="$PROJECT_DIR$/data_scraping/README.md" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/data/deathbycaptcha.py" beforeDir="false" afterPath="$PROJECT_DIR$/data_scraping/deathbycaptcha.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/data/example.py" beforeDir="false" afterPath="$PROJECT_DIR$/data_scraping/example.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/data/symbols.csv" beforeDir="false" afterPath="$PROJECT_DIR$/data_scraping/symbols.csv" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/data/test_selenium.py" beforeDir="false" afterPath="$PROJECT_DIR$/data_scraping/test_selenium.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/data/tickers_final.csv" beforeDir="false" afterPath="$PROJECT_DIR$/data_scraping/tickers_final.csv" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/consensus_project.iml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/consensus_project.iml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/misc.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/misc.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/data_scraping/README.md" beforeDir="false" afterPath="$PROJECT_DIR$/data_scraping/README.md" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/data_scraping/test_selenium.py" beforeDir="false" afterPath="$PROJECT_DIR$/data_scraping/test_selenium.py" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -27,10 +26,10 @@
   <component name="ProjectId" id="1axSMBMtCfvdm4fGTWa10TpU0PS" />
   <component name="ProjectViewState">
     <option name="hideEmptyMiddlePackages" value="true" />
-    <option name="showExcludedFiles" value="true" />
     <option name="showLibraryContents" value="true" />
   </component>
   <component name="PropertiesComponent">
+    <property name="ASKED_ADD_EXTERNAL_FILES" value="true" />
     <property name="RunOnceActivity.ShowReadmeOnStart" value="true" />
     <property name="SHARE_PROJECT_CONFIGURATION_FILES" value="true" />
     <property name="WebServerToolWindowFactoryState" value="true" />
@@ -47,7 +46,49 @@
       <recent name="$PROJECT_DIR$/data" />
     </key>
   </component>
-  <component name="RunManager">
+  <component name="RunManager" selected="Python.test_selenium (1)">
+    <configuration name="example" type="PythonConfigurationType" factoryName="Python" temporary="true" nameIsGenerated="true">
+      <module name="consensus_project" />
+      <option name="INTERPRETER_OPTIONS" value="" />
+      <option name="PARENT_ENVS" value="true" />
+      <envs>
+        <env name="PYTHONUNBUFFERED" value="1" />
+      </envs>
+      <option name="SDK_HOME" value="" />
+      <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$/data_scraping" />
+      <option name="IS_MODULE_SDK" value="true" />
+      <option name="ADD_CONTENT_ROOTS" value="true" />
+      <option name="ADD_SOURCE_ROOTS" value="true" />
+      <option name="SCRIPT_NAME" value="$PROJECT_DIR$/data_scraping/example.py" />
+      <option name="PARAMETERS" value="" />
+      <option name="SHOW_COMMAND_LINE" value="false" />
+      <option name="EMULATE_TERMINAL" value="false" />
+      <option name="MODULE_MODE" value="false" />
+      <option name="REDIRECT_INPUT" value="false" />
+      <option name="INPUT_FILE" value="" />
+      <method v="2" />
+    </configuration>
+    <configuration name="test_selenium (1)" type="PythonConfigurationType" factoryName="Python" temporary="true" nameIsGenerated="true">
+      <module name="consensus_project" />
+      <option name="INTERPRETER_OPTIONS" value="" />
+      <option name="PARENT_ENVS" value="true" />
+      <envs>
+        <env name="PYTHONUNBUFFERED" value="1" />
+      </envs>
+      <option name="SDK_HOME" value="" />
+      <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$/data_scraping" />
+      <option name="IS_MODULE_SDK" value="true" />
+      <option name="ADD_CONTENT_ROOTS" value="true" />
+      <option name="ADD_SOURCE_ROOTS" value="true" />
+      <option name="SCRIPT_NAME" value="$PROJECT_DIR$/data_scraping/test_selenium.py" />
+      <option name="PARAMETERS" value="" />
+      <option name="SHOW_COMMAND_LINE" value="false" />
+      <option name="EMULATE_TERMINAL" value="false" />
+      <option name="MODULE_MODE" value="false" />
+      <option name="REDIRECT_INPUT" value="false" />
+      <option name="INPUT_FILE" value="" />
+      <method v="2" />
+    </configuration>
     <configuration name="test_selenium" type="PythonConfigurationType" factoryName="Python" temporary="true" nameIsGenerated="true">
       <module name="consensus_project" />
       <option name="INTERPRETER_OPTIONS" value="" />
@@ -72,6 +113,8 @@
     </configuration>
     <recent_temporary>
       <list>
+        <item itemvalue="Python.test_selenium (1)" />
+        <item itemvalue="Python.example" />
         <item itemvalue="Python.test_selenium" />
       </list>
     </recent_temporary>
@@ -215,22 +258,26 @@
       <screen x="0" y="0" width="1680" height="1050" />
     </state>
     <state x="403" y="110" key="CommitChangelistDialog2/0.0.1680.1050@0.0.1680.1050" timestamp="1588269085296" />
-    <state width="1638" height="354" key="GridCell.Tab.0.bottom" timestamp="1588129592579">
-      <screen x="0" y="0" width="1680" height="1050" />
+    <state width="1379" height="210" key="GridCell.Tab.0.bottom" timestamp="1588544471419">
+      <screen x="0" y="23" width="1440" height="877" />
     </state>
     <state width="1638" height="354" key="GridCell.Tab.0.bottom/0.0.1680.1050@0.0.1680.1050" timestamp="1588129592579" />
-    <state width="1638" height="354" key="GridCell.Tab.0.center" timestamp="1588129592577">
-      <screen x="0" y="0" width="1680" height="1050" />
+    <state width="1379" height="210" key="GridCell.Tab.0.bottom/0.23.1440.877@0.23.1440.877" timestamp="1588544471419" />
+    <state width="1379" height="210" key="GridCell.Tab.0.center" timestamp="1588544471418">
+      <screen x="0" y="23" width="1440" height="877" />
     </state>
     <state width="1638" height="354" key="GridCell.Tab.0.center/0.0.1680.1050@0.0.1680.1050" timestamp="1588129592577" />
-    <state width="1638" height="354" key="GridCell.Tab.0.left" timestamp="1588129592576">
-      <screen x="0" y="0" width="1680" height="1050" />
+    <state width="1379" height="210" key="GridCell.Tab.0.center/0.23.1440.877@0.23.1440.877" timestamp="1588544471418" />
+    <state width="1379" height="210" key="GridCell.Tab.0.left" timestamp="1588544471417">
+      <screen x="0" y="23" width="1440" height="877" />
     </state>
     <state width="1638" height="354" key="GridCell.Tab.0.left/0.0.1680.1050@0.0.1680.1050" timestamp="1588129592576" />
-    <state width="1638" height="354" key="GridCell.Tab.0.right" timestamp="1588129592578">
-      <screen x="0" y="0" width="1680" height="1050" />
+    <state width="1379" height="210" key="GridCell.Tab.0.left/0.23.1440.877@0.23.1440.877" timestamp="1588544471417" />
+    <state width="1379" height="210" key="GridCell.Tab.0.right" timestamp="1588544471418">
+      <screen x="0" y="23" width="1440" height="877" />
     </state>
     <state width="1638" height="354" key="GridCell.Tab.0.right/0.0.1680.1050@0.0.1680.1050" timestamp="1588129592578" />
+    <state width="1379" height="210" key="GridCell.Tab.0.right/0.23.1440.877@0.23.1440.877" timestamp="1588544471418" />
     <state width="1638" height="354" key="GridCell.Tab.1.bottom" timestamp="1588129592581">
       <screen x="0" y="0" width="1680" height="1050" />
     </state>
@@ -247,10 +294,11 @@
       <screen x="0" y="0" width="1680" height="1050" />
     </state>
     <state width="1638" height="354" key="GridCell.Tab.1.right/0.0.1680.1050@0.0.1680.1050" timestamp="1588129592580" />
-    <state x="349" y="164" key="SettingsEditor" timestamp="1588046148752">
-      <screen x="0" y="0" width="1680" height="1050" />
+    <state x="327" y="133" key="SettingsEditor" timestamp="1588509372264">
+      <screen x="0" y="23" width="1440" height="877" />
     </state>
     <state x="349" y="164" key="SettingsEditor/0.0.1680.1050@0.0.1680.1050" timestamp="1588046148752" />
+    <state x="327" y="133" key="SettingsEditor/0.23.1440.877@0.23.1440.877" timestamp="1588509372264" />
     <state x="440" y="266" key="Vcs.Push.Dialog.v2" timestamp="1588219050752">
       <screen x="0" y="0" width="1680" height="1050" />
     </state>
@@ -259,8 +307,5 @@
       <screen x="0" y="0" width="1680" height="1050" />
     </state>
     <state width="840" height="525" key="XDebugger.FullValuePopup/0.0.1680.1050@0.0.1680.1050" timestamp="1588046324333" />
-  </component>
-  <component name="com.intellij.coverage.CoverageDataManagerImpl">
-    <SUITE FILE_PATH="coverage/consensus_project$selenium.coverage" NAME="selenium Coverage Results" MODIFIED="1588129400448" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/data" />
   </component>
 </project>
