@@ -64,10 +64,11 @@ def data_scrapping(args):
                 im = Image.open(BytesIO(png))
                 left = element.location_once_scrolled_into_view['x']
                 top = element.location_once_scrolled_into_view['y']  # +300
-                right = element.location_once_scrolled_into_view['x'] + size['width']
-                bottom = element.location_once_scrolled_into_view['y'] + size['height']  # +300
-                im = im.crop((left, top,right,bottom))  # defines crop points
+                right = element.location_once_scrolled_into_view['x'] + element.size['width']
+                bottom = element.location_once_scrolled_into_view['y'] + element.size['height']  # +300
+                im = im.crop((left, top, right, bottom))  # defines crop points
                 im.save('captcha.png')
+
                 # Send the captcha to the DeathByCaptcha
                 username = args.username
                 password = args.password

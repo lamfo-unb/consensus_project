@@ -22,12 +22,13 @@ options.add_experimental_option('prefs', prefs)
 
 #initializite the driver
 driver = webdriver.Chrome('/usr/local/bin/chromedriver', options=options)
-#TODO Loop in case of empty zip_file path (wrong captcha)
-# f_download = False
-# while not f_download:
 delay = 3  # seconds
 driver.get("http://fundamentus.com.br/balancos.php?papel=PETR4")
 WebDriverWait(driver, delay).until(EC.presence_of_element_located((By.ID, 'containerMenu')))
+
+with open('captcha.png', 'wb') as file:
+    file.write(driver.find_element_by_xpath('/html/body/div[1]/div[2]/form/img').screenshot_as_png)
+'''
 # Screen shot
 element = driver.find_element_by_class_name("captcha")
 # Get location
@@ -46,10 +47,11 @@ bottom = element.location_once_scrolled_into_view['y'] + size['height']  # +300
 im = im.crop((left, top, right, bottom))  # defines crop points
 # im = im.crop((230, 690, 630, 800))  defines crop points
 im.save('captcha.png')
+'''
 
 # Send the captcha to the DeathByCaptcha
 username = "pedrobsb"
-password = "*********"
+password = "********"
 
 # Send the captcha
 client = deathbycaptcha.SocketClient(username, password)
@@ -77,12 +79,6 @@ driver.quit()
 
 # Extract the zip file
 zip_file = glob.glob(tmp_path + "/" + "*.zip")
-#TODO Loop in case of empty zip_file path (wrong captcha)
-#    if zip_file:
-#        print("File exists!")
-#        f_download = True
-#    else:
-#        print("No file in path, trying again...")
 
 #Sleep and wait for zip extract
 time.sleep(2)
@@ -111,9 +107,11 @@ sheet1 = sheet1.drop(sheet1.columns[0], axis=1)
 #Transpose the data_scraping
 sheet1_transposed = sheet1.T
 #Define the column names
-print(sheet1_transposed)
 sheet1_transposed.columns = rownames[1:]
 #Define the rownames names
 sheet1_transposed.index = pd.to_datetime(colnames[1:],)
+print(sheet1_transposed)
+
+
 
 
