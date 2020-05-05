@@ -56,18 +56,9 @@ def data_scrapping(args):
                 delay = args.time
                 driver.get("http://fundamentus.com.br/balancos.php?papel="+str(sym))
                 WebDriverWait(driver, delay).until(EC.presence_of_element_located((By.ID, 'containerMenu')))
-                # Screen shot
-                element = driver.find_element_by_class_name("captcha")
-                # Do the screen shot
-                png = driver.get_screenshot_as_png()
-                # Cut the image
-                im = Image.open(BytesIO(png))
-                left = element.location_once_scrolled_into_view['x']
-                top = element.location_once_scrolled_into_view['y']  # +300
-                right = element.location_once_scrolled_into_view['x'] + element.size['width']
-                bottom = element.location_once_scrolled_into_view['y'] + element.size['height']  # +300
-                im = im.crop((left, top, right, bottom))  # defines crop points
-                im.save('captcha.png')
+                # Get captcha
+                with open('captcha.png', 'wb') as file:
+                    file.write(driver.find_element_by_xpath('/html/body/div[1]/div[2]/form/img').screenshot_as_png)
 
                 # Send the captcha to the DeathByCaptcha
                 username = args.username
