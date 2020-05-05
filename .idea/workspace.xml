@@ -1,25 +1,35 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="ChangeListManager">
-    <list default="true" id="c5bebbdb-4c62-4d29-90c3-485e871bffbf" name="Default Changelist" comment="">
+    <list default="true" id="c3476249-2ade-4940-8d8c-b2451b33d826" name="Default Changelist" comment="">
+      <change beforePath="$PROJECT_DIR$/.idea/consensus_project.iml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/consensus_project.iml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/misc.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/misc.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/data_scraping/README.md" beforeDir="false" afterPath="$PROJECT_DIR$/data_scraping/README.md" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/data_scraping/test_selenium.py" beforeDir="false" afterPath="$PROJECT_DIR$/data_scraping/test_selenium.py" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
     <option name="LAST_RESOLUTION" value="IGNORE" />
   </component>
+  <component name="FileTemplateManagerImpl">
+    <option name="RECENT_TEMPLATES">
+      <list>
+        <option value="Python Script" />
+      </list>
+    </option>
+  </component>
   <component name="Git.Settings">
     <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
   </component>
   <component name="ProjectId" id="1axSMBMtCfvdm4fGTWa10TpU0PS" />
-  <component name="ProjectLevelVcsManager" settingsEditedManually="true" />
   <component name="ProjectViewState">
     <option name="hideEmptyMiddlePackages" value="true" />
-    <option name="showExcludedFiles" value="true" />
     <option name="showLibraryContents" value="true" />
   </component>
   <component name="PropertiesComponent">
+    <property name="ASKED_ADD_EXTERNAL_FILES" value="true" />
     <property name="RunOnceActivity.ShowReadmeOnStart" value="true" />
     <property name="SHARE_PROJECT_CONFIGURATION_FILES" value="true" />
     <property name="WebServerToolWindowFactoryState" value="true" />
@@ -29,51 +39,273 @@
     <property name="node.js.path.for.package.tslint" value="project" />
     <property name="node.js.selected.package.eslint" value="(autodetect)" />
     <property name="node.js.selected.package.tslint" value="(autodetect)" />
+    <property name="settings.editor.selected.configurable" value="com.jetbrains.python.configuration.PyActiveSdkModuleConfigurable" />
+  </component>
+  <component name="RecentsManager">
+    <key name="MoveFile.RECENT_KEYS">
+      <recent name="$PROJECT_DIR$/data" />
+    </key>
+  </component>
+  <component name="RunManager" selected="Python.test_selenium (1)">
+    <configuration name="example" type="PythonConfigurationType" factoryName="Python" temporary="true" nameIsGenerated="true">
+      <module name="consensus_project" />
+      <option name="INTERPRETER_OPTIONS" value="" />
+      <option name="PARENT_ENVS" value="true" />
+      <envs>
+        <env name="PYTHONUNBUFFERED" value="1" />
+      </envs>
+      <option name="SDK_HOME" value="" />
+      <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$/data_scraping" />
+      <option name="IS_MODULE_SDK" value="true" />
+      <option name="ADD_CONTENT_ROOTS" value="true" />
+      <option name="ADD_SOURCE_ROOTS" value="true" />
+      <option name="SCRIPT_NAME" value="$PROJECT_DIR$/data_scraping/example.py" />
+      <option name="PARAMETERS" value="" />
+      <option name="SHOW_COMMAND_LINE" value="false" />
+      <option name="EMULATE_TERMINAL" value="false" />
+      <option name="MODULE_MODE" value="false" />
+      <option name="REDIRECT_INPUT" value="false" />
+      <option name="INPUT_FILE" value="" />
+      <method v="2" />
+    </configuration>
+    <configuration name="test_selenium (1)" type="PythonConfigurationType" factoryName="Python" temporary="true" nameIsGenerated="true">
+      <module name="consensus_project" />
+      <option name="INTERPRETER_OPTIONS" value="" />
+      <option name="PARENT_ENVS" value="true" />
+      <envs>
+        <env name="PYTHONUNBUFFERED" value="1" />
+      </envs>
+      <option name="SDK_HOME" value="" />
+      <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$/data_scraping" />
+      <option name="IS_MODULE_SDK" value="true" />
+      <option name="ADD_CONTENT_ROOTS" value="true" />
+      <option name="ADD_SOURCE_ROOTS" value="true" />
+      <option name="SCRIPT_NAME" value="$PROJECT_DIR$/data_scraping/test_selenium.py" />
+      <option name="PARAMETERS" value="" />
+      <option name="SHOW_COMMAND_LINE" value="false" />
+      <option name="EMULATE_TERMINAL" value="false" />
+      <option name="MODULE_MODE" value="false" />
+      <option name="REDIRECT_INPUT" value="false" />
+      <option name="INPUT_FILE" value="" />
+      <method v="2" />
+    </configuration>
+    <configuration name="test_selenium" type="PythonConfigurationType" factoryName="Python" temporary="true" nameIsGenerated="true">
+      <module name="consensus_project" />
+      <option name="INTERPRETER_OPTIONS" value="" />
+      <option name="PARENT_ENVS" value="true" />
+      <envs>
+        <env name="PYTHONUNBUFFERED" value="1" />
+      </envs>
+      <option name="SDK_HOME" value="" />
+      <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$/data" />
+      <option name="IS_MODULE_SDK" value="true" />
+      <option name="ADD_CONTENT_ROOTS" value="true" />
+      <option name="ADD_SOURCE_ROOTS" value="true" />
+      <EXTENSION ID="PythonCoverageRunConfigurationExtension" runner="coverage.py" />
+      <option name="SCRIPT_NAME" value="$PROJECT_DIR$/data/test_selenium.py" />
+      <option name="PARAMETERS" value="" />
+      <option name="SHOW_COMMAND_LINE" value="false" />
+      <option name="EMULATE_TERMINAL" value="false" />
+      <option name="MODULE_MODE" value="false" />
+      <option name="REDIRECT_INPUT" value="false" />
+      <option name="INPUT_FILE" value="" />
+      <method v="2" />
+    </configuration>
+    <recent_temporary>
+      <list>
+        <item itemvalue="Python.test_selenium (1)" />
+        <item itemvalue="Python.example" />
+        <item itemvalue="Python.test_selenium" />
+      </list>
+    </recent_temporary>
   </component>
   <component name="SvnConfiguration">
     <configuration />
   </component>
   <component name="TaskManager">
     <task active="true" id="Default" summary="Default task">
-      <changelist id="c5bebbdb-4c62-4d29-90c3-485e871bffbf" name="Default Changelist" comment="" />
-      <created>1587675702185</created>
+      <changelist id="c3476249-2ade-4940-8d8c-b2451b33d826" name="Default Changelist" comment="" />
+      <created>1588045363872</created>
       <option name="number" value="Default" />
       <option name="presentableId" value="Default" />
-      <updated>1587675702185</updated>
-      <workItem from="1587675705553" duration="300000" />
+      <updated>1588045363872</updated>
+      <workItem from="1588045365284" duration="2074000" />
+      <workItem from="1588121118771" duration="2397000" />
+      <workItem from="1588127629582" duration="643000" />
+      <workItem from="1588128530185" duration="42000" />
+      <workItem from="1588128577347" duration="934000" />
+      <workItem from="1588129597856" duration="865000" />
+      <workItem from="1588171902823" duration="83000" />
+      <workItem from="1588171989769" duration="4571000" />
+      <workItem from="1588217311031" duration="1555000" />
+      <workItem from="1588254345171" duration="1967000" />
+      <workItem from="1588258732862" duration="3979000" />
+      <workItem from="1588265101596" duration="2421000" />
     </task>
-    <task id="LOCAL-00001" summary="first commit">
-      <created>1587675746837</created>
+    <task id="LOCAL-00001" summary="Configure Selenium">
+      <created>1588047189021</created>
       <option name="number" value="00001" />
       <option name="presentableId" value="LOCAL-00001" />
       <option name="project" value="LOCAL" />
-      <updated>1587675746838</updated>
+      <updated>1588047189022</updated>
     </task>
-    <task id="LOCAL-00002" summary="first commit">
-      <created>1587675814935</created>
+    <task id="LOCAL-00002" summary="Configure Selenium">
+      <created>1588047454286</created>
       <option name="number" value="00002" />
       <option name="presentableId" value="LOCAL-00002" />
       <option name="project" value="LOCAL" />
-      <updated>1587675814935</updated>
+      <updated>1588047454286</updated>
     </task>
-    <option name="localTasksCounter" value="3" />
+    <task id="LOCAL-00003" summary="Configure Selenium">
+      <created>1588047665781</created>
+      <option name="number" value="00003" />
+      <option name="presentableId" value="LOCAL-00003" />
+      <option name="project" value="LOCAL" />
+      <updated>1588047665781</updated>
+    </task>
+    <task id="LOCAL-00004" summary="Screen Shot Captcha">
+      <created>1588123841456</created>
+      <option name="number" value="00004" />
+      <option name="presentableId" value="LOCAL-00004" />
+      <option name="project" value="LOCAL" />
+      <updated>1588123841456</updated>
+    </task>
+    <task id="LOCAL-00005" summary="Pass to death by captcha">
+      <created>1588130701473</created>
+      <option name="number" value="00005" />
+      <option name="presentableId" value="LOCAL-00005" />
+      <option name="project" value="LOCAL" />
+      <updated>1588130701473</updated>
+    </task>
+    <task id="LOCAL-00006" summary="Datascrapping">
+      <created>1588177809632</created>
+      <option name="number" value="00006" />
+      <option name="presentableId" value="LOCAL-00006" />
+      <option name="project" value="LOCAL" />
+      <updated>1588177809632</updated>
+    </task>
+    <task id="LOCAL-00007" summary="Delete unused files">
+      <created>1588177861484</created>
+      <option name="number" value="00007" />
+      <option name="presentableId" value="LOCAL-00007" />
+      <option name="project" value="LOCAL" />
+      <updated>1588177861484</updated>
+    </task>
+    <task id="LOCAL-00008" summary="Data transposed">
+      <created>1588219043044</created>
+      <option name="number" value="00008" />
+      <option name="presentableId" value="LOCAL-00008" />
+      <option name="project" value="LOCAL" />
+      <updated>1588219043045</updated>
+    </task>
+    <task id="LOCAL-00009" summary="Create the argpaser">
+      <created>1588257782654</created>
+      <option name="number" value="00009" />
+      <option name="presentableId" value="LOCAL-00009" />
+      <option name="project" value="LOCAL" />
+      <updated>1588257782654</updated>
+    </task>
+    <task id="LOCAL-00010" summary="Create the pipeline">
+      <created>1588259554100</created>
+      <option name="number" value="00010" />
+      <option name="presentableId" value="LOCAL-00010" />
+      <option name="project" value="LOCAL" />
+      <updated>1588259554100</updated>
+    </task>
+    <task id="LOCAL-00011" summary="Argpaser script">
+      <created>1588261970074</created>
+      <option name="number" value="00011" />
+      <option name="presentableId" value="LOCAL-00011" />
+      <option name="project" value="LOCAL" />
+      <updated>1588261970074</updated>
+    </task>
+    <task id="LOCAL-00012" summary="Argpaser code">
+      <created>1588263529304</created>
+      <option name="number" value="00012" />
+      <option name="presentableId" value="LOCAL-00012" />
+      <option name="project" value="LOCAL" />
+      <updated>1588263529304</updated>
+    </task>
+    <task id="LOCAL-00013" summary="Datascrapping code">
+      <created>1588268883722</created>
+      <option name="number" value="00013" />
+      <option name="presentableId" value="LOCAL-00013" />
+      <option name="project" value="LOCAL" />
+      <updated>1588268883722</updated>
+    </task>
+    <option name="localTasksCounter" value="14" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
     <option name="version" value="1" />
   </component>
   <component name="VcsManagerConfiguration">
-    <MESSAGE value="first commit" />
-    <option name="LAST_COMMIT_MESSAGE" value="first commit" />
+    <MESSAGE value="Configure Selenium" />
+    <MESSAGE value="Screen Shot Captcha" />
+    <MESSAGE value="Pass to death by captcha" />
+    <MESSAGE value="Datascrapping" />
+    <MESSAGE value="Delete unused files" />
+    <MESSAGE value="Data transposed" />
+    <MESSAGE value="Create the argpaser" />
+    <MESSAGE value="Create the pipeline" />
+    <MESSAGE value="Argpaser script" />
+    <MESSAGE value="Argpaser code" />
+    <MESSAGE value="Datascrapping code" />
+    <option name="LAST_COMMIT_MESSAGE" value="Datascrapping code" />
   </component>
   <component name="WindowStateProjectService">
-    <state x="403" y="110" key="CommitChangelistDialog2" timestamp="1587675814649">
+    <state x="403" y="110" key="CommitChangelistDialog2" timestamp="1588269085296">
       <screen x="0" y="0" width="1680" height="1050" />
     </state>
-    <state x="403" y="110" key="CommitChangelistDialog2/0.0.1680.1050@0.0.1680.1050" timestamp="1587675814649" />
-    <state x="440" y="266" key="Vcs.Push.Dialog.v2" timestamp="1587675821769">
+    <state x="403" y="110" key="CommitChangelistDialog2/0.0.1680.1050@0.0.1680.1050" timestamp="1588269085296" />
+    <state width="1379" height="210" key="GridCell.Tab.0.bottom" timestamp="1588544471419">
+      <screen x="0" y="23" width="1440" height="877" />
+    </state>
+    <state width="1638" height="354" key="GridCell.Tab.0.bottom/0.0.1680.1050@0.0.1680.1050" timestamp="1588129592579" />
+    <state width="1379" height="210" key="GridCell.Tab.0.bottom/0.23.1440.877@0.23.1440.877" timestamp="1588544471419" />
+    <state width="1379" height="210" key="GridCell.Tab.0.center" timestamp="1588544471418">
+      <screen x="0" y="23" width="1440" height="877" />
+    </state>
+    <state width="1638" height="354" key="GridCell.Tab.0.center/0.0.1680.1050@0.0.1680.1050" timestamp="1588129592577" />
+    <state width="1379" height="210" key="GridCell.Tab.0.center/0.23.1440.877@0.23.1440.877" timestamp="1588544471418" />
+    <state width="1379" height="210" key="GridCell.Tab.0.left" timestamp="1588544471417">
+      <screen x="0" y="23" width="1440" height="877" />
+    </state>
+    <state width="1638" height="354" key="GridCell.Tab.0.left/0.0.1680.1050@0.0.1680.1050" timestamp="1588129592576" />
+    <state width="1379" height="210" key="GridCell.Tab.0.left/0.23.1440.877@0.23.1440.877" timestamp="1588544471417" />
+    <state width="1379" height="210" key="GridCell.Tab.0.right" timestamp="1588544471418">
+      <screen x="0" y="23" width="1440" height="877" />
+    </state>
+    <state width="1638" height="354" key="GridCell.Tab.0.right/0.0.1680.1050@0.0.1680.1050" timestamp="1588129592578" />
+    <state width="1379" height="210" key="GridCell.Tab.0.right/0.23.1440.877@0.23.1440.877" timestamp="1588544471418" />
+    <state width="1638" height="354" key="GridCell.Tab.1.bottom" timestamp="1588129592581">
       <screen x="0" y="0" width="1680" height="1050" />
     </state>
-    <state x="440" y="266" key="Vcs.Push.Dialog.v2/0.0.1680.1050@0.0.1680.1050" timestamp="1587675821769" />
+    <state width="1638" height="354" key="GridCell.Tab.1.bottom/0.0.1680.1050@0.0.1680.1050" timestamp="1588129592581" />
+    <state width="1638" height="354" key="GridCell.Tab.1.center" timestamp="1588129592580">
+      <screen x="0" y="0" width="1680" height="1050" />
+    </state>
+    <state width="1638" height="354" key="GridCell.Tab.1.center/0.0.1680.1050@0.0.1680.1050" timestamp="1588129592580" />
+    <state width="1638" height="354" key="GridCell.Tab.1.left" timestamp="1588129592579">
+      <screen x="0" y="0" width="1680" height="1050" />
+    </state>
+    <state width="1638" height="354" key="GridCell.Tab.1.left/0.0.1680.1050@0.0.1680.1050" timestamp="1588129592579" />
+    <state width="1638" height="354" key="GridCell.Tab.1.right" timestamp="1588129592580">
+      <screen x="0" y="0" width="1680" height="1050" />
+    </state>
+    <state width="1638" height="354" key="GridCell.Tab.1.right/0.0.1680.1050@0.0.1680.1050" timestamp="1588129592580" />
+    <state x="327" y="133" key="SettingsEditor" timestamp="1588509372264">
+      <screen x="0" y="23" width="1440" height="877" />
+    </state>
+    <state x="349" y="164" key="SettingsEditor/0.0.1680.1050@0.0.1680.1050" timestamp="1588046148752" />
+    <state x="327" y="133" key="SettingsEditor/0.23.1440.877@0.23.1440.877" timestamp="1588509372264" />
+    <state x="440" y="266" key="Vcs.Push.Dialog.v2" timestamp="1588219050752">
+      <screen x="0" y="0" width="1680" height="1050" />
+    </state>
+    <state x="440" y="266" key="Vcs.Push.Dialog.v2/0.0.1680.1050@0.0.1680.1050" timestamp="1588219050752" />
+    <state width="840" height="525" key="XDebugger.FullValuePopup" timestamp="1588046324333">
+      <screen x="0" y="0" width="1680" height="1050" />
+    </state>
+    <state width="840" height="525" key="XDebugger.FullValuePopup/0.0.1680.1050@0.0.1680.1050" timestamp="1588046324333" />
   </component>
 </project>

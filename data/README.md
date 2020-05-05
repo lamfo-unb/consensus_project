@@ -1,1 +1,0 @@
-# Data scrapping the fundamentus.
