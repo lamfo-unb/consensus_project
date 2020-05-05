@@ -1,12 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="ChangeListManager">
-    <list default="true" id="c3476249-2ade-4940-8d8c-b2451b33d826" name="Default Changelist" comment="">
-      <change beforePath="$PROJECT_DIR$/.idea/consensus_project.iml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/consensus_project.iml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/misc.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/misc.xml" afterDir="false" />
+    <list default="true" id="c3476249-2ade-4940-8d8c-b2451b33d826" name="Default Changelist" comment="Datascrapping code">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/data_scraping/README.md" beforeDir="false" afterPath="$PROJECT_DIR$/data_scraping/README.md" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/data_scraping/test_selenium.py" beforeDir="false" afterPath="$PROJECT_DIR$/data_scraping/test_selenium.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/data_scraping/example.py" beforeDir="false" afterPath="$PROJECT_DIR$/data_scraping/scrapping.py" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -22,8 +19,10 @@
   </component>
   <component name="Git.Settings">
     <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
+    <option name="UPDATE_TYPE" value="MERGE" />
   </component>
   <component name="ProjectId" id="1axSMBMtCfvdm4fGTWa10TpU0PS" />
+  <component name="ProjectLevelVcsManager" settingsEditedManually="true" />
   <component name="ProjectViewState">
     <option name="hideEmptyMiddlePackages" value="true" />
     <option name="showLibraryContents" value="true" />
@@ -47,7 +46,7 @@
     </key>
   </component>
   <component name="RunManager" selected="Python.test_selenium (1)">
-    <configuration name="example" type="PythonConfigurationType" factoryName="Python" temporary="true" nameIsGenerated="true">
+    <configuration name="scrapping" type="PythonConfigurationType" factoryName="Python" temporary="true" nameIsGenerated="true">
       <module name="consensus_project" />
       <option name="INTERPRETER_OPTIONS" value="" />
       <option name="PARENT_ENVS" value="true" />
@@ -59,7 +58,8 @@
       <option name="IS_MODULE_SDK" value="true" />
       <option name="ADD_CONTENT_ROOTS" value="true" />
       <option name="ADD_SOURCE_ROOTS" value="true" />
-      <option name="SCRIPT_NAME" value="$PROJECT_DIR$/data_scraping/example.py" />
+      <EXTENSION ID="PythonCoverageRunConfigurationExtension" runner="coverage.py" />
+      <option name="SCRIPT_NAME" value="$PROJECT_DIR$/data_scraping/scrapping.py" />
       <option name="PARAMETERS" value="" />
       <option name="SHOW_COMMAND_LINE" value="false" />
       <option name="EMULATE_TERMINAL" value="false" />
@@ -80,6 +80,7 @@
       <option name="IS_MODULE_SDK" value="true" />
       <option name="ADD_CONTENT_ROOTS" value="true" />
       <option name="ADD_SOURCE_ROOTS" value="true" />
+      <EXTENSION ID="PythonCoverageRunConfigurationExtension" runner="coverage.py" />
       <option name="SCRIPT_NAME" value="$PROJECT_DIR$/data_scraping/test_selenium.py" />
       <option name="PARAMETERS" value="" />
       <option name="SHOW_COMMAND_LINE" value="false" />
@@ -114,7 +115,7 @@
     <recent_temporary>
       <list>
         <item itemvalue="Python.test_selenium (1)" />
-        <item itemvalue="Python.example" />
+        <item itemvalue="Python.scrapping" />
         <item itemvalue="Python.test_selenium" />
       </list>
     </recent_temporary>
@@ -254,10 +255,10 @@
     <option name="LAST_COMMIT_MESSAGE" value="Datascrapping code" />
   </component>
   <component name="WindowStateProjectService">
-    <state x="403" y="110" key="CommitChangelistDialog2" timestamp="1588269085296">
+    <state x="403" y="110" key="CommitChangelistDialog2" timestamp="1588639713513">
       <screen x="0" y="0" width="1680" height="1050" />
     </state>
-    <state x="403" y="110" key="CommitChangelistDialog2/0.0.1680.1050@0.0.1680.1050" timestamp="1588269085296" />
+    <state x="403" y="110" key="CommitChangelistDialog2/0.0.1680.1050@0.0.1680.1050" timestamp="1588639713513" />
     <state width="1379" height="210" key="GridCell.Tab.0.bottom" timestamp="1588544471419">
       <screen x="0" y="23" width="1440" height="877" />
     </state>
@@ -307,5 +308,9 @@
       <screen x="0" y="0" width="1680" height="1050" />
     </state>
     <state width="840" height="525" key="XDebugger.FullValuePopup/0.0.1680.1050@0.0.1680.1050" timestamp="1588046324333" />
+    <state x="629" y="449" key="com.intellij.openapi.vcs.update.UpdateOrStatusOptionsDialogupdate-v2" timestamp="1588639561503">
+      <screen x="0" y="0" width="1680" height="1050" />
+    </state>
+    <state x="629" y="449" key="com.intellij.openapi.vcs.update.UpdateOrStatusOptionsDialogupdate-v2/0.0.1680.1050@0.0.1680.1050" timestamp="1588639561503" />
   </component>
 </project>

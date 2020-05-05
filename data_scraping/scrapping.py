@@ -30,16 +30,7 @@ def main():
                         help='Pssword deathbycpatcha.')
     parser.add_argument('-a','--attempts', type=int, default=3,
                         help='Number of atempts to solve the captcha.')
-    parser.add_argument('-l', '--left', type=float, default=230,
-                        help='Left position crop captcha.')
-    parser.add_argument('-w', '--upper', type=float, default=680,
-                        help='Top position crop captcha.')
-    parser.add_argument('-r', '--right', type=float, default=630,
-                        help='Right position crop captcha.')
-    parser.add_argument('-b', '--bottom', type=float, default=780,
-                        help='Bottom position crop captcha.')
-
-    #Get arguments
+       #Get arguments
     args = parser.parse_args()
 
     #Run the data_scraping scrapping
@@ -71,8 +62,11 @@ def data_scrapping(args):
                 png = driver.get_screenshot_as_png()
                 # Cut the image
                 im = Image.open(BytesIO(png))
-                # TODO Get the location automatically (https://stackoverflow.com/questions/15018372/how-to-take-partial-screenshot-with-selenium-webdriver-in-python)
-                im = im.crop((args.left, args.upper, args.right, args.bottom))  # defines crop points
+                left = element.location_once_scrolled_into_view['x']
+                top = element.location_once_scrolled_into_view['y']  # +300
+                right = element.location_once_scrolled_into_view['x'] + size['width']
+                bottom = element.location_once_scrolled_into_view['y'] + size['height']  # +300
+                im = im.crop((left, top,right,bottom))  # defines crop points
                 im.save('captcha.png')
                 # Send the captcha to the DeathByCaptcha
                 username = args.username
@@ -154,4 +148,5 @@ def data_scrapping(args):
 if __name__ == '__main__':
     main()
 
-#python example.py --username=pedrobsb --password=****** --symbol=symbols.csv
+#python scrapping.py --time=3.0 --attempts=3 --username=pedrobsb --password=****** --symbol=symbols.csv
+
