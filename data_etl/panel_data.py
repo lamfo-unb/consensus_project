@@ -30,8 +30,10 @@ def create_lcsstr_matrix(columns_a,columns_b):
 dist_mat = create_lcsstr_matrix(columns_a,columns_b)
 
 result = np.argmin(dist_mat, axis =1)
+print(result)
 
-ipos = 7
+
+ipos = 8
 txt1 = columns_a[ipos]
 print(txt1)
 txt2 = columns_b[result[ipos]]
