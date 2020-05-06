@@ -10,6 +10,31 @@ with open(r'data/all_data.pkl', 'rb') as handle:
 columns_a = list(symbols.values())[0].columns.tolist()
 columns_b = list(symbols.values())[1].columns.tolist()
 
+
+
+##Temp
+
+sym1 = 'BBAS3'
+sym2 = 'BMIN3'
+columns_a = symbols[sym1].columns.to_numpy()
+columns_b = symbols[sym2].columns.to_numpy()
+
+
+# Step 1: Remove accents and makes everything upper case
+columns_a = [x.upper() for x in columns_a]
+columns_a = [unidecode.unidecode(x) for x in columns_a]
+columns_a = [x.replace(" ", "") for x in columns_a]
+columns_b = [x.upper() for x in columns_b]
+columns_b = [unidecode.unidecode(x) for x in columns_b]
+columns_b = [x.replace(" ", "") for x in columns_b]
+
+dist_mat = np.zeros((len(columns_a), len(columns_b)))
+for row in range(len(columns_a)):
+    for col in range(len(columns_b)):
+        dist_mat[row, col] = textdistance.lcsstr.distance(columns_a[row], columns_b[col])
+
+
+
 #Create the longest common substring similarity distance matrix
 def create_lcsstr_matrix(columns_a,columns_b):
     #Step 1: Remove accents and makes everything upper case
