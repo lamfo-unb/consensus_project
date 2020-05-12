@@ -1,4 +1,7 @@
+
+
 argparse==1.1
+sys
 tempfile
 selenium
 zipfile
@@ -14,3 +17,5 @@ os
 
 
 
+import sys as pd
+print(pd.__version__)
