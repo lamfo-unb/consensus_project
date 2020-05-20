@@ -14,5 +14,10 @@ bal = list(set(var['BAL']))
 inc_cod = ['TR.'+variables for variables in inc]
 bal_cod = ['TR.'+variables for variables in bal]
 
-#for asset in symbols['RIC']:
-df, err = ek.get_data('PETR4.SA', bal_cod)
+
+for asset in symbols['RIC'][60:]:
+    print(f'Getting data : {asset}')
+    df_bal, err = ek.get_data(asset, bal_cod,parameters = {'Period':'FQ0','Frq':'FQ','SDate':'2020-05-15','EDate':'2000-01-01'})
+    df_inc, err = ek.get_data(asset, inc_cod,parameters = {'Period':'FQ0','Frq':'FQ','SDate':'2020-05-15','EDate':'2000-01-01'})
+    df_merge = pd.merge(df_bal,df_inc,left_on='Balance Sheet Period End Date',right_on='Income Statement Period End Date')
+    df_merge.to_csv(f'../data/{asset}_merge.csv')
