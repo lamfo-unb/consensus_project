@@ -100,7 +100,8 @@ def join_data(df_fund_clean,df_reuters,new_names):
     """
     df_reuters.rename(columns=new_names,inplace=True)
     columns_mask = [new_names[x] for x in new_names]
-    df_final = pd.concat((df_fund_clean,df_reuters[columns_mask]),join='outer',axis=0).sort_index()
+    row_mask = df_reuters.index < df_fund_clean.index[0]
+    df_final = pd.concat((df_fund_clean,df_reuters.loc[row_mask,columns_mask]/1e3),join='outer',axis=0).sort_index()
 
     return df_final
 
