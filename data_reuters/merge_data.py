@@ -8,13 +8,14 @@ import pickle as pk
 from glob import glob
 
 
+
 def clean_zero_columns(df):
     # removes zero columns of a dataframe
     df = df.loc[:, (df != 0).any(axis=0)]
     return df
 
 
-def fix_duplicates(df,ticker):
+def fix_duplicates(df,ticker,folder_name='consolidate'):
     """
     reads and saves dataframe 
     this is done to rename all duplicated columns
@@ -27,8 +28,8 @@ def fix_duplicates(df,ticker):
         ticker of given equity
 
     """
-    df.to_csv(f'../data/consolidate/{ticker}.csv')
-    fixed_df = pd.read_csv(f'../data/consolidate/{ticker}.csv',
+    df.to_csv(f'../data/{folder_name}/{ticker}.csv')
+    fixed_df = pd.read_csv(f'../data/{folder_name}/{ticker}.csv',
                             index_col = '0',parse_dates=True).sort_index().astype(float)
     return fixed_df
 
@@ -105,14 +106,19 @@ def join_data(df_fund_clean,df_reuters,new_names):
 
     return df_final
 
-df_fund_raw = pd.read_pickle('../data/all_data.pkl')
-all_tickers = [name for name in df_fund_raw]
+def main():
 
-for ticker in all_tickers:
+    df_fund_raw = pd.read_pickle('../data/all_data.pkl')
+    all_tickers = [name for name in df_fund_raw]
 
-    found, df_reuters = check_existance(ticker)
-    if found:
-        df_fund_clean = fix_duplicates(df_fund_raw[ticker],ticker)
-        new_names = get_translation(df_fund_clean,df_reuters.copy(),ticker)
-        df_final = join_data(df_fund_clean,df_reuters,new_names)
-        df_final.to_csv(f'../data/consolidate/{ticker}.csv')
+    for ticker in all_tickers:
+
+        found, df_reuters = check_existance(ticker)
+        if found:
+            df_fund_clean = fix_duplicates(df_fund_raw[ticker],ticker)
+            new_names = get_translation(df_fund_clean,df_reuters.copy(),ticker)
+            df_final = join_data(df_fund_clean,df_reuters,new_names)
+            df_final.to_csv(f'../data/consolidate/{ticker}.csv')
+
+if __name__ == '__main__':
+    main()

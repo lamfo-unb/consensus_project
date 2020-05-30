@@ -36,7 +36,7 @@ def main():
     #Run the data_scraping scrapping
     data_scrapping(args)
 
-def data_scrapping(args):
+def data_scrapping(args,save_data=True):
     try:
         #Step 1: Read the CSV and run all over the companies
         symbols = pd.read_csv(args.symbol)
@@ -136,7 +136,10 @@ def data_scrapping(args):
         print(str(e))
 
     #Save the results
-    pickle.dump(df_results, open("resukts.pkl", "wb"))
+    if save_data:
+        pickle.dump(df_results, open("../data/all_data.pkl", "wb"))
+    else:
+        return df_results
 if __name__ == '__main__':
     main()
 
