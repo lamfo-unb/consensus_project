@@ -78,6 +78,62 @@ def Constuct_Mat_DataFreqLag_WG(g,d,K,m) :
         i=i-m
     return D
 
+
+def weights_midas_beta( th, bt, Spc):
+#construction covariates matrix as defined by MIDAS weighting scheme
+#th: parameters theta for the weighting kernel
+#bt: parameters beta for regression coefficients
+#Spc: MIDAS specifications
+
+    l=[]
+    for i=1:Spc['daily']:
+        l(i).one=ones(1,Spc['Kd'])
+        l(i).w=(1:Spc['Kd']/Spc['Kd']
+        l(i).k=1:Spc['Kd']
+        l(i).kk=Spc['Kd']
+
+    for i=1:Spc['monthly']:
+        l(Spc['daily']+i).one=ones(1,Spc['Km']
+        l(Spc['daily']+i).w=(1:Spc['Km']/Spc['Km'])
+        l(Spc['daily']+i).k=1:Spc['Km']
+        l(Spc['daily']+i).kk=Spc['Km']
+
+    for i=1:Spc['quarterly']:
+        l(Spc['daily']+Spc['monthly']+i).one=ones(1,Spc['Kq'])
+        l(Spc['daily']+Spc['monthly']+i).w=(1:Spc['Kq)/Spc['Kq']
+        l(Spc['daily']+Spc['monthly']+i).k=1:Spc['Kq']
+        l(Spc['daily']+Spc['monthly']+i).kk=Spc['Kq']
+
+
+    if Spc['TwoParam']:
+        th1=th(1:Spc['nbvar']);
+        th2=th(Spc['nbvar']+1:2*Spc['nbvar']);
+    else:
+        th2=th;
+
+    WW=[]; ww=[];
+    for i=1:length(th2):
+        W=zeros(1,Spc['sK'](i));
+        if Spc['TwoParam']:
+            if Spc['almon']:
+                W=exp(th1(i).*l(i).k + th2(i).*(l(i).k.^2)) / sum(exp(th1(i).*l(i).k + th2(i).*(l(i).k.^2)));
+            elif Spc['betaFc']:
+                W=exp(th1(i).*l(i).k + th2(i).*(l(i).k.^2)) / sum(exp(th1(i).*l(i).k + th2(i).*(l(i).k.^2)));
+        elif Spc['Averaging']
+            W=l(i).one./l(i).kk;
+        elif Spc['betaFc']
+            W=(th2(i)*(1-l(i).w).^(th2(i)-1)) / sum(th2(i)*(1-l(i).w).^(th2(i)-1));
+        elif Spc['betaFc_special']
+            W=th2(i)*l(i).w.*(1-l(i).w).^(th2(i)-1)/sum(th2(i)*l(i).w.*(1-l(i).w).^(th2(i)-1));
+
+        WW=[WW (W.*bt(i))];
+        ww=[ww W];
+
+    WM=WW';
+
+return([WM, ww])
+
+
 #%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 #Constructing X matrices in the MIDAS form (each row corresponds to a time t
 # indices ; and columns are the high-frequency data includes in [t-K;t])
@@ -120,6 +176,7 @@ phi=[]
 #Betas
 bt= np.random.binomial(1, Prct_relevant, Spec['nbvar'])*np.random.normal(0,1,Spec['nbvar'])
 [WM,weiii]=weights_midas_beta(np.r_[theta1,theta2],bt, Spec) # <-- This function computes the MIDAS exp Almon Weights w.r.t. parameters theta
+
 W=[WM,b0,phi]
 
 

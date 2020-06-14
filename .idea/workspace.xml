@@ -2,8 +2,8 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="c3476249-2ade-4940-8d8c-b2451b33d826" name="Default Changelist" comment="">
-      <change afterPath="$PROJECT_DIR$/midas_lasso/simulation.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/midas_lasso/simulation.py" beforeDir="false" afterPath="$PROJECT_DIR$/midas_lasso/simulation.py" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -178,7 +178,7 @@
       <workItem from="1591635979294" duration="3000" />
       <workItem from="1592099410003" duration="1447000" />
       <workItem from="1592101061778" duration="2987000" />
-      <workItem from="1592104335327" duration="1488000" />
+      <workItem from="1592104335327" duration="2323000" />
     </task>
     <task id="LOCAL-00001" summary="Configure Selenium">
       <created>1588047189021</created>
@@ -292,7 +292,14 @@
       <option name="project" value="LOCAL" />
       <updated>1591038702242</updated>
     </task>
-    <option name="localTasksCounter" value="17" />
+    <task id="LOCAL-00017" summary="MIDAS">
+      <created>1592106702813</created>
+      <option name="number" value="00017" />
+      <option name="presentableId" value="LOCAL-00017" />
+      <option name="project" value="LOCAL" />
+      <updated>1592106702813</updated>
+    </task>
+    <option name="localTasksCounter" value="18" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -323,10 +330,10 @@
       <screen x="0" y="23" width="1440" height="877" />
     </state>
     <state x="458" y="215" key="#com.intellij.refactoring.safeDelete.UnsafeUsagesDialog/0.23.1440.877@0.23.1440.877" timestamp="1588701908184" />
-    <state x="403" y="110" key="CommitChangelistDialog2" timestamp="1591038701854">
+    <state x="403" y="110" key="CommitChangelistDialog2" timestamp="1592106702367">
       <screen x="0" y="0" width="1680" height="1050" />
     </state>
-    <state x="403" y="110" key="CommitChangelistDialog2/0.0.1680.1050@0.0.1680.1050" timestamp="1591038701854" />
+    <state x="403" y="110" key="CommitChangelistDialog2/0.0.1680.1050@0.0.1680.1050" timestamp="1592106702367" />
     <state width="1379" height="210" key="GridCell.Tab.0.bottom" timestamp="1589233648248">
       <screen x="0" y="23" width="1440" height="877" />
     </state>
@@ -368,10 +375,10 @@
     </state>
     <state x="349" y="164" key="SettingsEditor/0.0.1680.1050@0.0.1680.1050" timestamp="1589252494544" />
     <state x="327" y="133" key="SettingsEditor/0.23.1440.877@0.23.1440.877" timestamp="1589202494034" />
-    <state x="440" y="266" key="Vcs.Push.Dialog.v2" timestamp="1591038910010">
+    <state x="440" y="266" key="Vcs.Push.Dialog.v2" timestamp="1592106733013">
       <screen x="0" y="0" width="1680" height="1050" />
     </state>
-    <state x="440" y="266" key="Vcs.Push.Dialog.v2/0.0.1680.1050@0.0.1680.1050" timestamp="1591038910010" />
+    <state x="440" y="266" key="Vcs.Push.Dialog.v2/0.0.1680.1050@0.0.1680.1050" timestamp="1592106733013" />
     <state width="840" height="525" key="XDebugger.FullValuePopup" timestamp="1592104061477">
       <screen x="0" y="0" width="1680" height="1050" />
     </state>
@@ -380,6 +387,10 @@
       <screen x="0" y="0" width="1680" height="1050" />
     </state>
     <state x="629" y="449" key="com.intellij.openapi.vcs.update.UpdateOrStatusOptionsDialogupdate-v2/0.0.1680.1050@0.0.1680.1050" timestamp="1588639561503" />
+    <state x="505" y="233" width="670" height="676" key="search.everywhere.popup" timestamp="1592107691647">
+      <screen x="0" y="0" width="1680" height="1050" />
+    </state>
+    <state x="505" y="233" width="670" height="676" key="search.everywhere.popup/0.0.1680.1050@0.0.1680.1050" timestamp="1592107691647" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>
