@@ -1,9 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="ChangeListManager">
-    <list default="true" id="c3476249-2ade-4940-8d8c-b2451b33d826" name="Default Changelist" comment="MIDAS">
-      <change afterPath="$PROJECT_DIR$/midas/midaspy.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/vcs.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/vcs.xml" afterDir="false" />
+    <list default="true" id="c3476249-2ade-4940-8d8c-b2451b33d826" name="Default Changelist" comment="">
+      <change afterPath="$PROJECT_DIR$/midas_lasso/simulation.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
@@ -175,7 +174,11 @@
       <workItem from="1588265101596" duration="2421000" />
       <workItem from="1589251898823" duration="6000" />
       <workItem from="1589251920587" duration="629000" />
-      <workItem from="1591037434645" duration="1093000" />
+      <workItem from="1591037434645" duration="1451000" />
+      <workItem from="1591635979294" duration="3000" />
+      <workItem from="1592099410003" duration="1447000" />
+      <workItem from="1592101061778" duration="2987000" />
+      <workItem from="1592104335327" duration="1488000" />
     </task>
     <task id="LOCAL-00001" summary="Configure Selenium">
       <created>1588047189021</created>
@@ -282,7 +285,14 @@
       <option name="project" value="LOCAL" />
       <updated>1589252615063</updated>
     </task>
-    <option name="localTasksCounter" value="16" />
+    <task id="LOCAL-00016" summary="MIDAS">
+      <created>1591038702242</created>
+      <option name="number" value="00016" />
+      <option name="presentableId" value="LOCAL-00016" />
+      <option name="project" value="LOCAL" />
+      <updated>1591038702242</updated>
+    </task>
+    <option name="localTasksCounter" value="17" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -301,7 +311,8 @@
     <MESSAGE value="Argpaser code" />
     <MESSAGE value="Datascrapping code" />
     <MESSAGE value="Create the Dockerfile" />
-    <option name="LAST_COMMIT_MESSAGE" value="Create the Dockerfile" />
+    <MESSAGE value="MIDAS" />
+    <option name="LAST_COMMIT_MESSAGE" value="MIDAS" />
   </component>
   <component name="WindowStateProjectService">
     <state x="304" y="188" key="#com.intellij.execution.impl.EditConfigurationsDialog" timestamp="1589252435393">
@@ -312,10 +323,10 @@
       <screen x="0" y="23" width="1440" height="877" />
     </state>
     <state x="458" y="215" key="#com.intellij.refactoring.safeDelete.UnsafeUsagesDialog/0.23.1440.877@0.23.1440.877" timestamp="1588701908184" />
-    <state x="403" y="110" key="CommitChangelistDialog2" timestamp="1591038685202">
+    <state x="403" y="110" key="CommitChangelistDialog2" timestamp="1591038701854">
       <screen x="0" y="0" width="1680" height="1050" />
     </state>
-    <state x="403" y="110" key="CommitChangelistDialog2/0.0.1680.1050@0.0.1680.1050" timestamp="1591038685202" />
+    <state x="403" y="110" key="CommitChangelistDialog2/0.0.1680.1050@0.0.1680.1050" timestamp="1591038701854" />
     <state width="1379" height="210" key="GridCell.Tab.0.bottom" timestamp="1589233648248">
       <screen x="0" y="23" width="1440" height="877" />
     </state>
@@ -357,14 +368,14 @@
     </state>
     <state x="349" y="164" key="SettingsEditor/0.0.1680.1050@0.0.1680.1050" timestamp="1589252494544" />
     <state x="327" y="133" key="SettingsEditor/0.23.1440.877@0.23.1440.877" timestamp="1589202494034" />
-    <state x="440" y="266" key="Vcs.Push.Dialog.v2" timestamp="1589252620411">
+    <state x="440" y="266" key="Vcs.Push.Dialog.v2" timestamp="1591038910010">
       <screen x="0" y="0" width="1680" height="1050" />
     </state>
-    <state x="440" y="266" key="Vcs.Push.Dialog.v2/0.0.1680.1050@0.0.1680.1050" timestamp="1589252620411" />
-    <state width="840" height="525" key="XDebugger.FullValuePopup" timestamp="1588046324333">
+    <state x="440" y="266" key="Vcs.Push.Dialog.v2/0.0.1680.1050@0.0.1680.1050" timestamp="1591038910010" />
+    <state width="840" height="525" key="XDebugger.FullValuePopup" timestamp="1592104061477">
       <screen x="0" y="0" width="1680" height="1050" />
     </state>
-    <state width="840" height="525" key="XDebugger.FullValuePopup/0.0.1680.1050@0.0.1680.1050" timestamp="1588046324333" />
+    <state width="840" height="525" key="XDebugger.FullValuePopup/0.0.1680.1050@0.0.1680.1050" timestamp="1592104061477" />
     <state x="629" y="449" key="com.intellij.openapi.vcs.update.UpdateOrStatusOptionsDialogupdate-v2" timestamp="1588639561503">
       <screen x="0" y="0" width="1680" height="1050" />
     </state>
