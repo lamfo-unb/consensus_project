@@ -3,10 +3,9 @@ import numpy as np
 import statsmodels.api as sm
 #Number of variables in the simulation
 numbervar = [20,100,200,300]
-print(numbervar)
 
 #for j in range(len(numbervar)):
-j = 1
+j = 0
 
 #Location parameter
 mu=0
@@ -79,67 +78,82 @@ def Constuct_Mat_DataFreqLag_WG(g,d,K,m) :
     return D
 
 
-def weights_midas_beta( th, bt, Spc):
+def weights_midas_beta(th, bt, Spc):
 #construction covariates matrix as defined by MIDAS weighting scheme
 #th: parameters theta for the weighting kernel
 #bt: parameters beta for regression coefficients
 #Spc: MIDAS specifications
-
     l=[]
-    for i=1:Spc['daily']:
-        l(i).one=ones(1,Spc['Kd'])
-        l(i).w=(1:Spc['Kd']/Spc['Kd']
-        l(i).k=1:Spc['Kd']
-        l(i).kk=Spc['Kd']
+    for i in range(Spc['daily']):
+        dict_daily = {}
+        dict_daily['one'] = np.ones(Spc['Kd'])
+        dict_daily['w'] = np.arange(1,Spc['Kd']+1)/Spc['Kd']
+        dict_daily['k'] =  np.arange(1,Spc['Kd']+1)
+        dict_daily['kk'] =  Spc['Kd']
+        l.append(dict_daily)
 
-    for i=1:Spc['monthly']:
-        l(Spc['daily']+i).one=ones(1,Spc['Km']
-        l(Spc['daily']+i).w=(1:Spc['Km']/Spc['Km'])
-        l(Spc['daily']+i).k=1:Spc['Km']
-        l(Spc['daily']+i).kk=Spc['Km']
+    for i in range(Spc['monthly']):
+        dict_monthly = {}
+        dict_monthly['one'] = np.ones(Spc['Km'])
+        dict_monthly['w'] = np.arange(1,Spc['Km']+1)/Spc['Km']
+        dict_monthly['k'] =  np.arange(1,Spc['Km']+1)
+        dict_monthly['kk'] =  Spc['Km']
+        l.append(dict_monthly)
 
-    for i=1:Spc['quarterly']:
-        l(Spc['daily']+Spc['monthly']+i).one=ones(1,Spc['Kq'])
-        l(Spc['daily']+Spc['monthly']+i).w=(1:Spc['Kq)/Spc['Kq']
-        l(Spc['daily']+Spc['monthly']+i).k=1:Spc['Kq']
-        l(Spc['daily']+Spc['monthly']+i).kk=Spc['Kq']
+
+    for i in range(Spc['quarterly']):
+        dict_quarterly = {}
+        dict_quarterly['one'] = np.ones(Spc['Kq'])
+        dict_quarterly['w'] = np.arange(1, Spc['Kq'] + 1) / Spc['Kq']
+        dict_quarterly['k'] = np.arange(1, Spc['Kq'] + 1)
+        dict_quarterly['kk'] = Spc['Kq']
+        l.append(dict_quarterly)
 
 
     if Spc['TwoParam']:
-        th1=th(1:Spc['nbvar']);
-        th2=th(Spc['nbvar']+1:2*Spc['nbvar']);
+        th1=th[0:Spc['nbvar']]
+        th2=th[Spc['nbvar']:2*Spc['nbvar']]
     else:
-        th2=th;
+        th2=th
 
-    WW=[]; ww=[];
-    for i=1:length(th2):
-        W=zeros(1,Spc['sK'](i));
+#
+#
+#     WW=[]; ww=[];
+    for i in range(len(th2)):
+        W=np.zeros(Spc['sK'][i])
         if Spc['TwoParam']:
             if Spc['almon']:
-                W=exp(th1(i).*l(i).k + th2(i).*(l(i).k.^2)) / sum(exp(th1(i).*l(i).k + th2(i).*(l(i).k.^2)));
-            elif Spc['betaFc']:
-                W=exp(th1(i).*l(i).k + th2(i).*(l(i).k.^2)) / sum(exp(th1(i).*l(i).k + th2(i).*(l(i).k.^2)));
-        elif Spc['Averaging']
-            W=l(i).one./l(i).kk;
-        elif Spc['betaFc']
-            W=(th2(i)*(1-l(i).w).^(th2(i)-1)) / sum(th2(i)*(1-l(i).w).^(th2(i)-1));
-        elif Spc['betaFc_special']
-            W=th2(i)*l(i).w.*(1-l(i).w).^(th2(i)-1)/sum(th2(i)*l(i).w.*(1-l(i).w).^(th2(i)-1));
+                W=np.exp(th1[i]*l[i]['k'] + th2[i]*np.square(l[i]['k'])) / np.sum(np.exp(th1[i]*l[i]['k'] + th2[i]*np.square(l[i]['k'])))
+                print(W)
 
-        WW=[WW (W.*bt(i))];
-        ww=[ww W];
-
-    WM=WW';
-
-return([WM, ww])
-
+        #     elseif Spc.betaFc
+        #         W=exp(th1(i).*l(i).k + th2(i).*(l(i).k.^2)) / sum(exp(th1(i).*l(i).k + th2(i).*(l(i).k.^2)));
+        #     end
+        # elseif Spc.Averaging
+        #     W=l(i).one./l(i).kk;
+        # elseif Spc.betaFc
+        #     W=(th2(i)*(1-l(i).w).^(th2(i)-1)) / sum(th2(i)*(1-l(i).w).^(th2(i)-1));
+        # elseif Spc.betaFc_special
+        #     W=th2(i)*l(i).w.*(1-l(i).w).^(th2(i)-1)/sum(th2(i)*l(i).w.*(1-l(i).w).^(th2(i)-1));
+        # end
+#
+#         WW=[WW (W.*bt(i))];
+#
+#         ww=[ww W];
+#
+#     end
+#
+#     WM=WW';
+#
+# end
+    return l
 
 #%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 #Constructing X matrices in the MIDAS form (each row corresponds to a time t
 # indices ; and columns are the high-frequency data includes in [t-K;t])
 
-XX_Reg=[]
-XX_For=[]
+# XX_Reg=[]
+# XX_For=[]
 Spec['sK']=[]
 Spec['Type']=[]
 
@@ -148,55 +162,62 @@ Xd = np.zeros([2*(T+Toos)*kappad,Spec['daily']])
 for i in range(Spec['daily']):
     modeld = {'Constant': 0, 'AR': np.r_[1, np.random.uniform(-1, 1)],'MA':np.r_[1, 0], 'ARLags': [1], 'Variance': 0.15}
     Xd[:,i] = sm.tsa.arma_generate_sample(ar = modeld['AR'], ma=modeld['MA'], nsample= 2*(T+Toos)*kappad, scale = math.sqrt(modeld['Variance']))
-    x = Constuct_Mat_DataFreqLag_WG(np.r_[y,yoos],Xd[:,i],Spec['Kd'],kappad) #<-- Here is the function for constructing the high to low frequency matrix
     Spec['sK'].append(Spec['Kd'])
     Spec['Type'].append('D')
-    XX_Reg.append(x[0:T,:]) # <-- Then the high-frequency matrices are splitted to go either In-Sample matrix (XX.Reg) or Out-of Sample matrix (XX.For)
-    XX_For.append(x[T:T+Toos,:])
+    if i==0 :
+        x = Constuct_Mat_DataFreqLag_WG(np.r_[y,yoos],Xd[:,i],Spec['Kd'],kappad) #<-- Here is the function for constructing the high to low frequency matrix
+    else:
+        x0 = Constuct_Mat_DataFreqLag_WG(np.r_[y, yoos], Xd[:, i], Spec['Kd'],
+                                        kappad)  # <-- Here is the function for constructing the high to low frequency matrix
+        x = np.c_[x,x0]
+
+XX_Reg = x[0:T,:]
+XX_For = x[T:T+Toos,:]
 
 
 #monthly matrix
 Xm = np.zeros([2*(T+Toos)*kappam,Spec['monthly']])
 for i in range(Spec['monthly']):
-    modelm = {'Constant': 0, 'AR': np.r_[0.2, np.random.uniform(-1, 1)],'MA':np.r_[1, 0], 'ARLags': [1], 'Variance': 0.15}
+    modelm = {'Constant': 0, 'AR': np.r_[1, np.random.uniform(-1, 1)],'MA':np.r_[1, 0], 'ARLags': [1], 'Variance': 0.15}
     Xm[:,i] = sm.tsa.arma_generate_sample(ar = modelm['AR'], ma=modelm['MA'], nsample=2*(T+Toos)*kappam, scale = math.sqrt(modeld['Variance']))
-    x = Constuct_Mat_DataFreqLag_WG(np.r_[y,yoos],Xm[:,i],Spec['Km'],kappam) #<-- Here is the function for constructing the high to low frequency matrix
     Spec['sK'].append(Spec['Km'])
     Spec['Type'].append('M')
-    XX_Reg.append(x[0:T,:]) # <-- Then the high-frequency matrices are splitted to go either In-Sample matrix (XX.Reg) or Out-of Sample matrix (XX.For)
-    XX_For.append(x[T:T+Toos,:])
+    if i == 0:
+        x = Constuct_Mat_DataFreqLag_WG(np.r_[y, yoos], Xm[:, i], Spec['Km'],
+                                        kappam)
+    else:
+        x0 = Constuct_Mat_DataFreqLag_WG(np.r_[y, yoos], Xm[:, i], Spec['Km'],
+                                        kappam)
+        x = np.c_[x, x0]
+XX_Reg = np.c_[XX_Reg,x[0:T,:]]
+XX_For = np.c_[XX_For,x[T:T+Toos,:]]
 
 
 #Construction Y
 theta1=0.1*np.ones(Spec['nbvar'])
 theta2=-0.05*np.ones(Spec['nbvar'])
+
 #Intercpet
 b0=.5
 phi=[]
+
 #Betas
 bt= np.random.binomial(1, Prct_relevant, Spec['nbvar'])*np.random.normal(0,1,Spec['nbvar'])
-[WM,weiii]=weights_midas_beta(np.r_[theta1,theta2],bt, Spec) # <-- This function computes the MIDAS exp Almon Weights w.r.t. parameters theta
 
-W=[WM,b0,phi]
+test = weights_midas_beta(np.r_[theta1,theta2],bt, Spec)
 
+# WM,weiii = weights_midas_beta(np.r_[theta1,theta2],bt, Spec)
+# W = WM.copy()
+# W.append(b0)
+# W.extend(phi)
+#
+#
+# #Adding a column of one in the covariates matrix
+# XX_Reg = np.c_[XX_Reg, np.ones(T)]
+# XX_For = np.c_[XX_For,np.ones(Toos)]
 
-print(bt)
-
-# ar =  np.r_[0, 0.5]# add zero-lag and negate
-# ma = np.r_[1, 0] # add zero-lag
-# y = sm.tsa.arma_generate_sample(ar, ma, 250)
-# print(y)
-
-
-
-
-# for i=1:Spec.daily
-#     Xd(:,i)=simulate(modeld,2*(T+Toos)*kappad);
-#     x = Constuct_Mat_DataFreqLag_WG([y;yoos],Xd(:,i),Spec.Kd,kappad); % <-- Here is the function for constructing the high to low frequency matrix
-#     Spec.sK=[Spec.sK Spec.Kd];    Spec.Type=[Spec.Type 'D'];
-#     XX.Reg=[XX.Reg x(1:T,:)]; % <-- Then the high-frequency matrices are splitted to go either In-Sample matrix (XX.Reg) or Out-of Sample matrix (XX.For)
-#     XX.For=[XX.For x(T+1:T+Toos,:)];
-# end
-
-
-#y = sm.tsa.arma_generate_sample(ar, ma, 250)
+# #Computing Y
+# Yreg=XX_Reg*W
+# Yfor=XX_For*W
+ ##X_Reg 200, 2100
+ ##X_For = 50, 2100
