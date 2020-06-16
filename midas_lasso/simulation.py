@@ -119,12 +119,12 @@ def weights_midas_beta(th, bt, Spc):
 #
 #
 #     WW=[]; ww=[];
+    print(len(th2))
     for i in range(len(th2)):
         W=np.zeros(Spc['sK'][i])
         if Spc['TwoParam']:
             if Spc['almon']:
-                W=np.exp(th1[i]*l[i]['k'] + th2[i]*np.square(l[i]['k'])) / np.sum(np.exp(th1[i]*l[i]['k'] + th2[i]*np.square(l[i]['k'])))
-                print(W)
+                W0=np.exp(th1[i]*l[i]['k'] + th2[i]*np.square(l[i]['k'])) / np.sum(np.exp(th1[i]*l[i]['k'] + th2[i]*np.square(l[i]['k'])))
 
         #     elseif Spc.betaFc
         #         W=exp(th1(i).*l(i).k + th2(i).*(l(i).k.^2)) / sum(exp(th1(i).*l(i).k + th2(i).*(l(i).k.^2)));
@@ -136,7 +136,10 @@ def weights_midas_beta(th, bt, Spc):
         # elseif Spc.betaFc_special
         #     W=th2(i)*l(i).w.*(1-l(i).w).^(th2(i)-1)/sum(th2(i)*l(i).w.*(1-l(i).w).^(th2(i)-1));
         # end
-#
+        if i==0:
+            W = W0*bt[i]
+        else:
+            W = np.c_[W,W0*bt[i]]
 #         WW=[WW (W.*bt(i))];
 #
 #         ww=[ww W];
@@ -145,7 +148,7 @@ def weights_midas_beta(th, bt, Spc):
 #
 #     WM=WW';
 #
-# end
+    print(W)
     return l
 
 #%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
