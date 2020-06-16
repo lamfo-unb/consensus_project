@@ -204,7 +204,8 @@
       <workItem from="1592101061778" duration="2987000" />
       <workItem from="1592104335327" duration="11089000" />
       <workItem from="1592195157435" duration="1499000" />
-      <workItem from="1592272531826" duration="266000" />
+      <workItem from="1592272531826" duration="495000" />
+      <workItem from="1592273103770" duration="4544000" />
     </task>
     <task id="LOCAL-00001" summary="Configure Selenium">
       <created>1588047189021</created>
@@ -339,7 +340,14 @@
       <option name="project" value="LOCAL" />
       <updated>1592196049785</updated>
     </task>
-    <option name="localTasksCounter" value="20" />
+    <task id="LOCAL-00020" summary="MIDAS">
+      <created>1592272847495</created>
+      <option name="number" value="00020" />
+      <option name="presentableId" value="LOCAL-00020" />
+      <option name="project" value="LOCAL" />
+      <updated>1592272847495</updated>
+    </task>
+    <option name="localTasksCounter" value="21" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -370,10 +378,10 @@
       <screen x="0" y="23" width="1440" height="877" />
     </state>
     <state x="458" y="215" key="#com.intellij.refactoring.safeDelete.UnsafeUsagesDialog/0.23.1440.877@0.23.1440.877" timestamp="1588701908184" />
-    <state x="403" y="110" key="CommitChangelistDialog2" timestamp="1592196049502">
+    <state x="403" y="110" key="CommitChangelistDialog2" timestamp="1592272847271">
       <screen x="0" y="0" width="1680" height="1050" />
     </state>
-    <state x="403" y="110" key="CommitChangelistDialog2/0.0.1680.1050@0.0.1680.1050" timestamp="1592196049502" />
+    <state x="403" y="110" key="CommitChangelistDialog2/0.0.1680.1050@0.0.1680.1050" timestamp="1592272847271" />
     <state width="1379" height="210" key="GridCell.Tab.0.bottom" timestamp="1589233648248">
       <screen x="0" y="23" width="1440" height="877" />
     </state>

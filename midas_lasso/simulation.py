@@ -1,6 +1,8 @@
 import math
 import numpy as np
 import statsmodels.api as sm
+import scipy.optimize as op
+
 #Number of variables in the simulation
 numbervar = [20,100,200,300]
 
@@ -109,48 +111,98 @@ def weights_midas_beta(th, bt, Spc):
         dict_quarterly['kk'] = Spc['Kq']
         l.append(dict_quarterly)
 
-
     if Spc['TwoParam']:
         th1=th[0:Spc['nbvar']]
         th2=th[Spc['nbvar']:2*Spc['nbvar']]
     else:
         th2=th
 
-#
-#
-#     WW=[]; ww=[];
-    print(len(th2))
     for i in range(len(th2)):
-        W=np.zeros(Spc['sK'][i])
         if Spc['TwoParam']:
             if Spc['almon']:
                 W0=np.exp(th1[i]*l[i]['k'] + th2[i]*np.square(l[i]['k'])) / np.sum(np.exp(th1[i]*l[i]['k'] + th2[i]*np.square(l[i]['k'])))
-
-        #     elseif Spc.betaFc
-        #         W=exp(th1(i).*l(i).k + th2(i).*(l(i).k.^2)) / sum(exp(th1(i).*l(i).k + th2(i).*(l(i).k.^2)));
-        #     end
-        # elseif Spc.Averaging
-        #     W=l(i).one./l(i).kk;
-        # elseif Spc.betaFc
-        #     W=(th2(i)*(1-l(i).w).^(th2(i)-1)) / sum(th2(i)*(1-l(i).w).^(th2(i)-1));
-        # elseif Spc.betaFc_special
-        #     W=th2(i)*l(i).w.*(1-l(i).w).^(th2(i)-1)/sum(th2(i)*l(i).w.*(1-l(i).w).^(th2(i)-1));
-        # end
+            elif Spc['betaFc']:
+                W0=np.exp(th1[i]*l[i]['k'] + th2[i]*np.square(l[i]['k'])) / np.sum(np.exp(th1[i]*l[i]['k'] + th2[i]*np.square(l[i]['k'])));
+        elif Spc['Averaging']:
+            W0=l[i]['one']/l[i]['kk']
+        elif Spc['betaFc']:
+            W0=np.power(th2[i]*(1-l[i]['w']),(th2[i]-1)) / sum(np.power(th2[i]*(1-l[i]['w']),(th2[i]-1)))
+        elif Spc['betaFc_special']:
+            W0=th2[i]*l[i]['w']*np.power((1-l[i]['w']),(th2[i]-1))/sum(th2[i]*l[i]['w']*np.power((1-l[i]['w']),(th2[i]-1)))
         if i==0:
             W = W0*bt[i]
+            ww = W0
         else:
-            W = np.c_[W,W0*bt[i]]
-#         WW=[WW (W.*bt(i))];
-#
-#         ww=[ww W];
-#
-#     end
-#
-#     WM=WW';
-#
-    print(W)
-    return l
+            W = np.r_[W,W0*bt[i]]
+            ww = np.r_[ww,W0]
 
+    return W.T, ww
+
+def SSE_midas_beta_lasso(param, x, y, Spec, LO):
+    b0 = None
+    phi = None
+    th1 = None
+    # Sum of Squared Errors
+    th2=param[0:Spec['nbvar']]
+    bt=param[Spec['nbvar']:2*Spec.nbvar]
+    if Spec['TwoParam']:
+        th1=param[0:Spec.nbvar]
+        th2=param[Spec.nbvar:2*Spec.nbvar]
+        bt=param[2*Spec.nbvar:3*Spec.nbvar]
+    if Spec['intercept']:
+        b0=param(2*Spec.nbvar+Spec.TwoParam*Spec.nbvar+1)
+    if Spec['AR']:
+        phi=param[-1]
+
+    WM, _ = weights_midas_beta(np.r_[th1,th2],bt,Spec)
+
+    W = np.r_[WM,b0,phi]
+
+    EPS=y-x.dot(W) # epsilon without LASSO penalty
+
+    # LASSO
+    LassoPen=np.zeros(Spec['nbvar'])
+
+    mu=LO['mu']
+    lambda_par=LO['lambda']
+
+    for i in Spec['nbvar']:
+        if np.abs(bt[i])<=mu:
+            LassoPen[i]=bt[i]/mu
+        else:
+            LassoPen[i]=np.sign(bt[i])
+
+    #NormNesterov=np.sum(LassoPen*bt)-(mu/2)*np.square(np.linalg.norm(LassoPen,2))
+
+    pp=LO['norm']
+    SSE=np.sum(np.square(EPS))+lambda_par*np.power(np.sum(np.power(np.abs(bt),pp)),(1/pp))#*np.linalg.norm(bt,1);
+    return SSE
+
+def SSE_midas_beta(param, x, y, Spec):
+    # Sum of Squared Errors
+    b0 = None
+    phi = None
+    th1 = None
+    # Sum of Squared Errors
+    th2=param[0:Spec['nbvar']]
+    bt=param[Spec['nbvar']:2*Spec.nbvar]
+    if Spec['TwoParam']:
+        th1=param[0:Spec.nbvar]
+        th2=param[Spec.nbvar:2*Spec.nbvar]
+        bt=param[2*Spec.nbvar:3*Spec.nbvar]
+    if Spec['intercept']:
+        b0=param(2*Spec.nbvar+Spec.TwoParam*Spec.nbvar+1)
+    if Spec['AR']:
+        phi=param[-1]
+
+    WM, _ = weights_midas_beta(np.r_[th1,th2],bt,Spec)
+
+    W = np.r_[WM,b0,phi]
+
+    EPS=y-x.dot(W)
+
+    SSE=np.sum(np.square(EPS))
+    return SSE
 #%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 #Constructing X matrices in the MIDAS form (each row corresponds to a time t
 # indices ; and columns are the high-frequency data includes in [t-K;t])
@@ -206,21 +258,72 @@ phi=[]
 
 #Betas
 bt= np.random.binomial(1, Prct_relevant, Spec['nbvar'])*np.random.normal(0,1,Spec['nbvar'])
+WM,weiii = weights_midas_beta(np.r_[theta1,theta2],bt, Spec)
 
-test = weights_midas_beta(np.r_[theta1,theta2],bt, Spec)
+##Add beta0 and phi
+W = np.r_[WM,b0,phi]
 
-# WM,weiii = weights_midas_beta(np.r_[theta1,theta2],bt, Spec)
-# W = WM.copy()
-# W.append(b0)
-# W.extend(phi)
-#
-#
-# #Adding a column of one in the covariates matrix
-# XX_Reg = np.c_[XX_Reg, np.ones(T)]
-# XX_For = np.c_[XX_For,np.ones(Toos)]
+#Adding a column of one in the covariates matrix
+if b0 is not None:
+    XX_Reg = np.c_[XX_Reg, np.ones(T)]
+    XX_For = np.c_[XX_For,np.ones(Toos)]
 
 # #Computing Y
-# Yreg=XX_Reg*W
-# Yfor=XX_For*W
- ##X_Reg 200, 2100
- ##X_For = 50, 2100
+Yreg=XX_Reg.dot(W)
+Yfor=XX_For.dot(W)
+
+#### LASSO Specifications
+# Parameter (lambda)
+lambda_par=[0,1] # <-- Here is a range for a loop
+#Norm (e.g. if norme=1 it's the LASSO, norme=2 it's the ridge,... )
+norme=np.r_[0,np.ones(len(lambda_par)-1)] # <-- same size than the lambda_par vector
+
+# Number of models to simulate
+Mdl=100
+M={}
+m=1
+
+# DGP from gaussian noise
+Ysim=Yreg+np.random.normal(mu,sigma,T) # In-sample Y
+Yfsim=Yfor+np.random.normal(mu,sigma,Toos) # Out-of-sample Y
+Relevant=np.where(np.abs(bt)>1e-8)[0] #Relevant betas
+
+# loop on parameters lambda_par
+for i in range(len(lambda_par)):
+    #display
+    print('# variables '+str(Nbvar))
+    print('model no. ' +str(m))
+    print('lambda= ' +str(lambda_par[i]))
+
+    R={}
+    R['Ysim'] = Ysim
+    R['Yfsim'] = Yfsim
+
+    # LASSO technical specifications
+    LO={}
+    LO['lambda']=lambda_par[i]
+    LO['wCV']   =1
+    LO['mu']    =.01 # <-- mu for Nesterov regularization
+    LO['norm']  =norme[i]
+    R['lambda']=LO['lambda']
+    Spec['n_iter']        =5
+    Spec['EPS']           =0
+    Spec['SSE']           =1
+    Spec['constraint']    =0
+    # Initializing parameters
+    param_init=np.zeros(Spec['nbvar']*3+1)
+
+    # Optimazation option
+    #     Spec.options=optimset('GradObj','off','Display','iter','LargeScale','off', ...
+    #                         'MaxFunEvals',100000,'MaxIter', 100000,'TolFun',1e-6, 'TolX',1e-6);
+    # Case of LASSO-MIDAS model
+    if i>0:
+        # fun_est_midas=@(param)SSE_midas_beta_lasso(param, XX.Reg, R.Ysim, Spec, LO);
+        xopt = op.fmin(SSE_midas_beta_lasso, param_init, xtol=1e-8, args=(XX_Reg, R['Ysim'], Spec, LO,))
+        # [prm, Fval, EF]=fminunc(fun_est_midas,param_init,Spec.options);
+
+    #Classical MIDAS regression model
+    else:
+        # fun_est_midas=@(param)SSE_midas_beta(param, XX.Reg, R.Ysim, Spec);
+        xopt = op.fmin(SSE_midas_beta, param_init, xtol=1e-8, args=(XX_Reg, R['Ysim'], Spec,))
+        # [prm, Fval, EF]=fminunc(fun_est_midas,param_init,Spec.options);
