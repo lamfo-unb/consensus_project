@@ -205,7 +205,13 @@
       <workItem from="1592104335327" duration="11089000" />
       <workItem from="1592195157435" duration="1499000" />
       <workItem from="1592272531826" duration="495000" />
-      <workItem from="1592273103770" duration="4544000" />
+      <workItem from="1592273103770" duration="6248000" />
+      <workItem from="1592361044801" duration="283000" />
+      <workItem from="1592361351711" duration="506000" />
+      <workItem from="1592361863473" duration="71000" />
+      <workItem from="1592361944313" duration="583000" />
+      <workItem from="1592362572299" duration="194000" />
+      <workItem from="1592362778232" duration="3655000" />
     </task>
     <task id="LOCAL-00001" summary="Configure Selenium">
       <created>1588047189021</created>
@@ -347,7 +353,14 @@
       <option name="project" value="LOCAL" />
       <updated>1592272847495</updated>
     </task>
-    <option name="localTasksCounter" value="21" />
+    <task id="LOCAL-00021" summary="MIDAS">
+      <created>1592278635111</created>
+      <option name="number" value="00021" />
+      <option name="presentableId" value="LOCAL-00021" />
+      <option name="project" value="LOCAL" />
+      <updated>1592278635111</updated>
+    </task>
+    <option name="localTasksCounter" value="22" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -378,10 +391,10 @@
       <screen x="0" y="23" width="1440" height="877" />
     </state>
     <state x="458" y="215" key="#com.intellij.refactoring.safeDelete.UnsafeUsagesDialog/0.23.1440.877@0.23.1440.877" timestamp="1588701908184" />
-    <state x="403" y="110" key="CommitChangelistDialog2" timestamp="1592272847271">
+    <state x="403" y="110" key="CommitChangelistDialog2" timestamp="1592278634934">
       <screen x="0" y="0" width="1680" height="1050" />
     </state>
-    <state x="403" y="110" key="CommitChangelistDialog2/0.0.1680.1050@0.0.1680.1050" timestamp="1592272847271" />
+    <state x="403" y="110" key="CommitChangelistDialog2/0.0.1680.1050@0.0.1680.1050" timestamp="1592278634934" />
     <state width="1379" height="210" key="GridCell.Tab.0.bottom" timestamp="1589233648248">
       <screen x="0" y="23" width="1440" height="877" />
     </state>
@@ -423,10 +436,10 @@
     </state>
     <state x="349" y="164" key="SettingsEditor/0.0.1680.1050@0.0.1680.1050" timestamp="1589252494544" />
     <state x="327" y="133" key="SettingsEditor/0.23.1440.877@0.23.1440.877" timestamp="1589202494034" />
-    <state x="440" y="266" key="Vcs.Push.Dialog.v2" timestamp="1592196060489">
+    <state x="440" y="266" key="Vcs.Push.Dialog.v2" timestamp="1592278652356">
       <screen x="0" y="0" width="1680" height="1050" />
     </state>
-    <state x="440" y="266" key="Vcs.Push.Dialog.v2/0.0.1680.1050@0.0.1680.1050" timestamp="1592196060489" />
+    <state x="440" y="266" key="Vcs.Push.Dialog.v2/0.0.1680.1050@0.0.1680.1050" timestamp="1592278652356" />
     <state width="840" height="525" key="XDebugger.FullValuePopup" timestamp="1592195184759">
       <screen x="0" y="0" width="1680" height="1050" />
     </state>

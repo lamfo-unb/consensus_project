@@ -2,6 +2,7 @@ import math
 import numpy as np
 import statsmodels.api as sm
 import scipy.optimize as op
+import matplotlib.pyplot as plt
 
 #Number of variables in the simulation
 numbervar = [20,100,200,300]
@@ -144,19 +145,26 @@ def SSE_midas_beta_lasso(param, x, y, Spec, LO):
     th1 = None
     # Sum of Squared Errors
     th2=param[0:Spec['nbvar']]
-    bt=param[Spec['nbvar']:2*Spec.nbvar]
+    bt=param[Spec['nbvar']:2*Spec['nbvar']]
     if Spec['TwoParam']:
-        th1=param[0:Spec.nbvar]
-        th2=param[Spec.nbvar:2*Spec.nbvar]
-        bt=param[2*Spec.nbvar:3*Spec.nbvar]
+        th1=param[0:Spec['nbvar']]
+        th2=param[Spec['nbvar']:2*Spec['nbvar']]
+        bt=param[2*Spec['nbvar']:3*Spec['nbvar']]
     if Spec['intercept']:
-        b0=param(2*Spec.nbvar+Spec.TwoParam*Spec.nbvar+1)
+        b0=param[2*Spec['nbvar']+Spec['TwoParam']*Spec['nbvar']]
     if Spec['AR']:
         phi=param[-1]
 
     WM, _ = weights_midas_beta(np.r_[th1,th2],bt,Spec)
 
-    W = np.r_[WM,b0,phi]
+    if b0 is not None and phi is not None:
+        W = np.r_[WM,b0,phi]
+    elif b0 is not None:
+        W = np.r_[WM,b0]
+    elif phi is not None:
+        W = np.r_[WM,phi]
+    else:
+        W = WM
 
     EPS=y-x.dot(W) # epsilon without LASSO penalty
 
@@ -166,7 +174,7 @@ def SSE_midas_beta_lasso(param, x, y, Spec, LO):
     mu=LO['mu']
     lambda_par=LO['lambda']
 
-    for i in Spec['nbvar']:
+    for i in range(Spec['nbvar']):
         if np.abs(bt[i])<=mu:
             LassoPen[i]=bt[i]/mu
         else:
@@ -185,19 +193,26 @@ def SSE_midas_beta(param, x, y, Spec):
     th1 = None
     # Sum of Squared Errors
     th2=param[0:Spec['nbvar']]
-    bt=param[Spec['nbvar']:2*Spec.nbvar]
+    bt=param[Spec['nbvar']:2*Spec['nbvar']]
     if Spec['TwoParam']:
-        th1=param[0:Spec.nbvar]
-        th2=param[Spec.nbvar:2*Spec.nbvar]
-        bt=param[2*Spec.nbvar:3*Spec.nbvar]
+        th1=param[0:Spec['nbvar']]
+        th2=param[Spec['nbvar']:2*Spec['nbvar']]
+        bt=param[2*Spec['nbvar']:3*Spec['nbvar']]
     if Spec['intercept']:
-        b0=param(2*Spec.nbvar+Spec.TwoParam*Spec.nbvar+1)
+        b0=param[2*Spec['nbvar']+Spec['TwoParam']*Spec['nbvar']]
     if Spec['AR']:
         phi=param[-1]
 
     WM, _ = weights_midas_beta(np.r_[th1,th2],bt,Spec)
 
-    W = np.r_[WM,b0,phi]
+    if b0 is not None and phi is not None:
+        W = np.r_[WM,b0,phi]
+    elif b0 is not None:
+        W = np.r_[WM,b0]
+    elif phi is not None:
+        W = np.r_[WM,phi]
+    else:
+        W = WM
 
     EPS=y-x.dot(W)
 
@@ -289,6 +304,7 @@ Yfsim=Yfor+np.random.normal(mu,sigma,Toos) # Out-of-sample Y
 Relevant=np.where(np.abs(bt)>1e-8)[0] #Relevant betas
 
 # loop on parameters lambda_par
+results = []
 for i in range(len(lambda_par)):
     #display
     print('# variables '+str(Nbvar))
@@ -313,17 +329,76 @@ for i in range(len(lambda_par)):
     # Initializing parameters
     param_init=np.zeros(Spec['nbvar']*3+1)
 
-    # Optimazation option
-    #     Spec.options=optimset('GradObj','off','Display','iter','LargeScale','off', ...
-    #                         'MaxFunEvals',100000,'MaxIter', 100000,'TolFun',1e-6, 'TolX',1e-6);
     # Case of LASSO-MIDAS model
     if i>0:
-        # fun_est_midas=@(param)SSE_midas_beta_lasso(param, XX.Reg, R.Ysim, Spec, LO);
-        xopt = op.fmin(SSE_midas_beta_lasso, param_init, xtol=1e-8, args=(XX_Reg, R['Ysim'], Spec, LO,))
-        # [prm, Fval, EF]=fminunc(fun_est_midas,param_init,Spec.options);
+        xopt =  op.fmin(SSE_midas_beta_lasso, param_init,args=(XX_Reg, R['Ysim'], Spec, LO,), xtol=1e-4, ftol=1e-4, maxiter=100000, maxfun=100000)
 
     #Classical MIDAS regression model
     else:
-        # fun_est_midas=@(param)SSE_midas_beta(param, XX.Reg, R.Ysim, Spec);
-        xopt = op.fmin(SSE_midas_beta, param_init, xtol=1e-8, args=(XX_Reg, R['Ysim'], Spec,))
-        # [prm, Fval, EF]=fminunc(fun_est_midas,param_init,Spec.options);
+        xopt = op.fmin(SSE_midas_beta, param_init,args=(XX_Reg, R['Ysim'], Spec,), xtol=1e-4, ftol=1e-4, maxiter=100000, maxfun=100000)
+
+    #Saving parameters
+    R['th_simul']=xopt[0:2*Spec['nbvar']]
+    R['bt_simul']=xopt[2*Spec['nbvar']:(len(xopt)-1)]
+    R['RelevantVar_simul']=0
+    R['IrrelevantVar_simul']=0
+
+    #Number of non-zeros beta coefficients (Sparsity)
+    for ll in range(len(R['bt_simul'])):
+        if -sigma/math.sqrt(len(R['bt_simul']))<R['bt_simul'][ll] and R['bt_simul'][ll]<sigma/math.sqrt(len(R['bt_simul'])):
+            R['IrrelevantVar_simul']=R['IrrelevantVar_simul']+1
+        else:
+            R['RelevantVar_simul']=R['RelevantVar_simul']+1
+
+    #Computing fitted values
+
+    WM ,_ = weights_midas_beta(R['th_simul'],R['bt_simul'],Spec)
+    W=np.r_[WM,xopt[-1]]
+    R['xopt']=xopt
+
+    #In-sample results
+    R['Yhat']=XX_Reg.dot(W)
+    R['resid']=R['Ysim']-R['Yhat']
+    R['MSE']=np.sum(np.square(R['resid']))
+    R['RMSE']=np.sqrt(R['MSE'])
+
+    #Out-of-sample results
+    R['Yfhat']=XX_For.dot(W)
+    R['fresid']=R['Yfsim']-R['Yfhat']
+    R['MSFE']=np.sum(np.square(R['fresid']))
+    R['RMSFE']=np.sqrt(R['MSFE'])
+    results.append(R)
+
+
+#Plot the difference
+R0 = results[0]
+range = np.arange(1,len(R0['bt_simul'])+1)
+print(len(bt))
+print(len(R0['bt_simul']))
+
+fig=plt.figure()
+ax=fig.add_axes([0,0,1,1])
+ax.scatter(range, bt, color='r')
+ax.scatter(range, R0['bt_simul'], color='b')
+ax.set_xlabel('Range')
+ax.set_ylabel('Betas')
+ax.set_title('MIDAS')
+plt.show()
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
