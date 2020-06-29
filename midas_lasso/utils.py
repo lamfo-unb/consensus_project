@@ -2,6 +2,76 @@ import numpy as np
 import statsmodels.api as sm
 
 
+def create_time_dicts(Spc):
+    """
+    Creates a dict with daily, monthly and quarterly information
+    """
+    abreviations = ['Kd','Km','Kq']
+    daily_range = Spc['daily']
+    monthly_range = Spc['monthly']
+    quarterly_range = Spc['quarterly']
+    all_ranges = np.cumsum([0,daily_range,monthly_range,quarterly_range])
+
+    out_list = []
+    for i,abrev in enumerate(abreviations):
+        temp_dict = {}
+        temp_dict['range'] = range(all_ranges[i],all_ranges[i+1])
+        temp_dict['one'] = np.ones(Spc[abrev])
+        temp_dict['w'] = np.arange(1,Spc[abrev]+1)/Spc[abrev]
+        temp_dict['k'] =  np.arange(1,Spc[abrev]+1)
+        temp_dict['kk'] =  Spc[abrev]
+        out_list.append(temp_dict)
+
+    return out_list
+
+def weights_midas_beta(th, bt, Spc):
+    """
+    Constructs covariates matrix as defined by MIDAS weighting scheme
+
+    Inputs
+    ------
+    th: parameters theta for the weighting kernel
+    bt: parameters beta for regression coefficients
+    Spc: MIDAS specifications
+
+    Returns
+    -------
+    W : weights
+
+    """
+
+    dict_list = create_time_dicts(Spc)
+
+    if Spc['TwoParam']:
+        th1=th[0:Spc['nbvar']]
+        th2=th[Spc['nbvar']:2*Spc['nbvar']]
+    else:
+        th2=th
+
+    for time_period in dict_list:
+        for i in time_period['range']:
+            if Spc['TwoParam']:
+                if Spc['almon']:
+                    W0=np.exp(th1[i]*time_period['k'] + th2[i]*np.square(time_period['k'])) / np.sum(np.exp(th1[i]*time_period['k'] + th2[i]*np.square(time_period['k'])))
+                elif Spc['betaFc']:
+                    W0=np.exp(th1[i]*time_period['k'] + th2[i]*np.square(time_period['k'])) / np.sum(np.exp(th1[i]*time_period['k'] + th2[i]*np.square(time_period['k'])))
+            elif Spc['Averaging']:
+                W0=time_period['one']/time_period['kk']
+            elif Spc['betaFc']:
+                W0=np.power(th2[i]*(1-time_period['w']),(th2[i]-1)) / sum(np.power(th2[i]*(1-time_period['w']),(th2[i]-1)))
+            elif Spc['betaFc_special']:
+                W0=th2[i]*time_period['w']*np.power((1-time_period['w']),(th2[i]-1))/sum(th2[i]*time_period['w']*np.power((1-time_period['w']),(th2[i]-1)))
+            if i==0:
+                W = W0*bt[i]
+                ww = W0
+            else:
+                W = np.r_[W,W0*bt[i]]
+                ww = np.r_[ww,W0]
+
+    return W.T
+
+
+
 def Constuct_Mat_DataFreqLag_WG(g,d,K,m) :
     #param: g: vector of low frequency data (Y)
     #param: d: vector of high frequency data (X)

@@ -1,10 +1,9 @@
 import math
 import numpy as np
 import statsmodels.api as sm
-import scipy.optimize as op
 import matplotlib.pyplot as plt
-from utils import Constuct_Mat_DataFreqLag_WG, simulate_X
-from midas_model import weights_midas_beta,SSE_midas_beta
+from utils import Constuct_Mat_DataFreqLag_WG, simulate_X, weights_midas_beta
+from midas_model import MidasLasso
 
 
 
@@ -119,8 +118,8 @@ M={}
 m=1
 
 # DGP from gaussian noise
-Ysim=Yreg+np.random.normal(mu,sigma,T_train) # In-sample Y
-Yfsim=Yfor+np.random.normal(mu,sigma,T_test) # Out-of-sample Y
+y_train=Yreg+np.random.normal(mu,sigma,T_train) # In-sample Y
+y_test=Yfor+np.random.normal(mu,sigma,T_test) # Out-of-sample Y
 Relevant=np.where(np.abs(bt)>1e-8)[0] #Relevant betas
 
 # loop on parameters lambda_par
@@ -132,8 +131,8 @@ for i in range(len(lambda_par)):
     print('lambda= ' +str(lambda_par[i]))
 
     R={}
-    R['Ysim'] = Ysim
-    R['Yfsim'] = Yfsim
+    R['y_train'] = y_train
+    R['y_test'] = y_test
 
     # LASSO technical specifications
     LO={}
@@ -149,14 +148,16 @@ for i in range(len(lambda_par)):
     # Initializing parameters
     param_init=np.zeros(Spec['nbvar']*3+1)
 
+    model = MidasLasso(Spec)
+
     # Case of LASSO-MIDAS model
     if i>0:
-        xopt =  op.fmin(SSE_midas_beta, param_init,args=(X_train, R['Ysim'], Spec, LO,), xtol=1e-4, ftol=1e-4, maxiter=100000, maxfun=100000)
-
+        #xopt =  op.fmin(SSE_midas_beta, param_init,args=(X_train, y_train, Spec, LO,), xtol=1e-4, ftol=1e-4, maxiter=100000, maxfun=100000)
+        xopt = model.fit(X_train,y_train,LO)
     #Classical MIDAS regression model
     else:
-        xopt = op.fmin(SSE_midas_beta, param_init,args=(X_train, R['Ysim'], Spec,), xtol=1e-4, ftol=1e-4, maxiter=100000, maxfun=100000)
-
+        #xopt = op.fmin(SSE_midas_beta, param_init,args=(X_train, y_train, Spec,), xtol=1e-4, ftol=1e-4, maxiter=100000, maxfun=100000)
+        xopt = model.fit(X_train,y_train)
     #Saving parameters
     R['th_simul']=xopt[0:2*Spec['nbvar']]
     R['bt_simul']=xopt[2*Spec['nbvar']:(len(xopt)-1)]
@@ -178,13 +179,13 @@ for i in range(len(lambda_par)):
 
     #In-sample results
     R['Yhat']=X_train.dot(W)
-    R['resid']=R['Ysim']-R['Yhat']
+    R['resid']=R['y_train']-R['Yhat']
     R['MSE']=np.sum(np.square(R['resid']))
     R['RMSE']=np.sqrt(R['MSE'])
 
     #Out-of-sample results
     R['Yfhat']=X_test.dot(W)
-    R['fresid']=R['Yfsim']-R['Yfhat']
+    R['fresid']=R['y_test']-R['Yfhat']
     R['MSFE']=np.sum(np.square(R['fresid']))
     R['RMSFE']=np.sqrt(R['MSFE'])
     results.append(R)
