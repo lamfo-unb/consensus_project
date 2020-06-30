@@ -11,12 +11,13 @@ class MidasLasso():
         self.param_init=np.zeros(settings['nbvar']*3+1)
         
 
-    def SSE_midas_beta(self,param, x, y, L0=False):
-        # Sum of Squared Errors
+    def _apply_settings(self,param):
+        """ Apply settings to the weights """
+
         b0 = None
         phi = None
         th1 = None
-        # Sum of Squared Errors
+
         th2=param[0:self.settings['nbvar']]
         bt=param[self.settings['nbvar']:2*self.settings['nbvar']]
         if self.settings['TwoParam']:
@@ -31,13 +32,20 @@ class MidasLasso():
         WM = weights_midas_beta(np.r_[th1,th2],bt,self.settings)
 
         if b0 is not None and phi is not None:
-            W = np.r_[WM,b0,phi]
+            return np.r_[WM,b0,phi],bt
         elif b0 is not None:
-            W = np.r_[WM,b0]
+            return np.r_[WM,b0],bt
         elif phi is not None:
-            W = np.r_[WM,phi]
+            return np.r_[WM,phi],bt
         else:
-            W = WM
+            return WM,bt
+
+
+
+    def SSE_midas_beta(self,param, x, y, L0=False):
+
+
+        W,bt = self._apply_settings(param)
 
         EPS=y-x.dot(W)
 
