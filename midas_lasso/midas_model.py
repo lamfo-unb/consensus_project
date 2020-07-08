@@ -9,6 +9,7 @@ class MidasLasso():
     def __init__(self,settings):
         self.settings = settings
         self.param_init=np.zeros(settings['nbvar']*3+1)
+        self.W = None
         
 
     def _apply_settings(self,param):
@@ -78,4 +79,9 @@ class MidasLasso():
 
         xopt =  op.fmin(self.SSE_midas_beta, self.param_init,args=(X_train, y_train, L0,), xtol=1e-4, ftol=1e-4, maxiter=100000, maxfun=100000)
 
+        WM = weights_midas_beta(xopt[0:2*self.settings['nbvar']],xopt[2*self.settings['nbvar']:(len(xopt)-1)],self.settings)
+        self.W=np.r_[WM,xopt[-1]]
         return xopt
+
+    def predict(self,X_test):
+        return np.dot(X_test,self.W)

@@ -1,6 +1,41 @@
 import numpy as np
 import statsmodels.api as sm
+from variables import sigma
 
+
+def calculate_residuals(model,X_train,X_test,y_train,y_test):
+
+    y_train_pred = model.predict(X_train)
+    y_test_pred = model.predict(X_test)
+    training_residuals = y_train - y_train_pred
+    testing_residuals = y_test - y_test_pred
+    mse_train = np.sqrt(np.sum(np.square(training_residuals)))
+    mse_test = np.sqrt(np.sum(np.square(testing_residuals)))
+
+    return mse_train, mse_test
+
+def store_results(xopt,X_train,X_test,y_train,y_test,L0,model):
+
+    R={}
+    R['lambda']=L0
+    R['th_simul']=xopt[0:2*model.settings['nbvar']]
+    R['bt_simul']=xopt[2*model.settings['nbvar']:(len(xopt)-1)]
+    R['RelevantVar_simul']=0
+    R['IrrelevantVar_simul']=0
+    R['xopt']=xopt
+
+    for ll in range(len(R['bt_simul'])):
+        if -sigma/np.sqrt(len(R['bt_simul']))<R['bt_simul'][ll] and R['bt_simul'][ll]<sigma/np.sqrt(len(R['bt_simul'])):
+            R['IrrelevantVar_simul']=R['IrrelevantVar_simul']+1
+        else:
+            R['RelevantVar_simul']=R['RelevantVar_simul']+1
+
+    # MSE for test and train
+
+    R['MSE_train'], R['MSE_test'] = calculate_residuals(model,X_train,X_test,y_train,y_test)
+
+
+    return R
 
 def create_time_dicts(Spc):
     """
