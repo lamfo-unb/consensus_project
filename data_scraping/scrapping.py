@@ -18,6 +18,29 @@ import warnings
 warnings.simplefilter(action='ignore', category=FutureWarning)
 import pandas as pd
 
+def transpose_df(raw_dict):
+    out = pd.DataFrame()
+    for sheet in raw_dict:
+        temp = raw_dict[sheet]
+        colnames = temp.iloc[0, :]
+        colnames.iloc[0] = "Data"
+        # get rownames
+        rownames = temp.iloc[:, 0]
+        # Delete the first row
+        temp = temp.drop(temp.index[0])
+        # Delete the first column
+        temp = temp.drop(temp.columns[0], axis=1)
+        # Transpose the data_scraping
+        temp_transposed = temp.T
+        # Define the column names
+        temp_transposed.columns = rownames[1:]
+        # Define the rownames names
+        temp_transposed.index = pd.to_datetime(colnames[1:], )
+
+        out = pd.concat((out,temp_transposed),axis=1)
+        
+    return out
+
 def main():
     parser = argparse.ArgumentParser()
     parser.add_argument('-t','--time', type=float, default=3.0,
@@ -109,25 +132,11 @@ def data_scrapping(args,save_data=True):
                 xls_file = glob.glob(tmp_path + "/" + "*.xls")
 
                 # Read all sheets in a PandasDataFrame
-                sheet1 = pd.read_excel(xls_file[0], sheet_name=0, header=None, skiprows=1)
+                fund_dict = pd.read_excel(xls_file[0], sheet_name=None, header=None, skiprows=1)
 
-                # get column names
-                colnames = sheet1.iloc[0, :]
-                colnames.iloc[0] = "Data"
-                # get rownames
-                rownames = sheet1.iloc[:, 0]
-                # Delete the first row
-                sheet1 = sheet1.drop(sheet1.index[0])
-                # Delete the first column
-                sheet1 = sheet1.drop(sheet1.columns[0], axis=1)
-                # Transpose the data_scraping
-                sheet1_transposed = sheet1.T
-                # Define the column names
-                sheet1_transposed.columns = rownames[1:]
-                # Define the rownames names
-                sheet1_transposed.index = pd.to_datetime(colnames[1:], )
+                transposed_df = transpose_df(fund_dict)
                 #Save results
-                df_results[sym] = sheet1_transposed
+                df_results[sym] = transposed_df
             if empty == True:
                 print("ERROR: Symbol: "+sym+" was not downloaded.")
             else:
@@ -142,6 +151,3 @@ def data_scrapping(args,save_data=True):
         return df_results
 if __name__ == '__main__':
     main()
-
-#python scrapping.py --time=3.0 --attempts=3 --username=pedrobsb --password=****** --symbol=symbols.csv
-
