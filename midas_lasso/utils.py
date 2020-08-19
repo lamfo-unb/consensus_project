@@ -1,7 +1,73 @@
 import numpy as np
+import pandas as pd
 import statsmodels.api as sm
-from variables import sigma
+from variables import sigma, Spec, mu, b0, phi, Prct_relevant
 
+
+
+def read_ticker(ticker):
+    """ 
+    Reads ticker and returns X's and y's according to target column and 
+    testing length
+    """
+    df = pd.read_csv(f'data/consolidate/{ticker}.csv',
+                    index_col='Unnamed: 0',parse_dates=True).fillna(0)
+
+    df = df.loc[:, (df != 0).any(axis=0)] # removing 0 columns
+    df = df.pct_change().replace([np.inf, -np.inf, np.nan], 0)
+
+    return df
+
+
+
+def load_data(ticker,T_test,file_name_monthly,y_col='Lucro/Prejuízo do Período'):
+    """ 
+    Loads data from target company and merges with data from IPEA
+    """
+    df_monthly = read_ipea(file_name_monthly)
+    df_quarterly = read_ticker(ticker)
+
+    df_all = pd.concat([df_monthly,df_quarterly],join='inner',axis=1)
+
+    y_all = df_all.loc[:,y_col].copy()
+    X_all = df_all.drop(columns=y_col)
+
+    X_train = X_all.iloc[:-T_test,:]
+    X_test = X_all.iloc[-T_test:,:]
+
+    y_train = y_all[:-T_test]
+    y_test = y_all[-T_test:]
+
+    return X_train.values, X_test.values, y_train.values, y_test.values
+
+
+def lagger(dataset, n_lags, price_columns):
+    """
+    Creates columns of time lags
+    """
+    from toolz.curried import reduce
+    df = reduce(
+        lambda df, lag: df.assign(**{col + '_' +str(lag): dataset[[col]].shift(lag).values for col in price_columns}),
+        range(1, n_lags + 1),
+        dataset[price_columns])
+
+    result = df.assign(**{col: dataset[col] for col in dataset.drop(price_columns, axis=1).columns}).fillna(0)
+    return result[sorted(result.columns)]
+
+
+def read_ipea(file_name):
+    """
+    Reads data downloaded from IPEA and returns it on quarterly frequency
+    """
+    df = pd.read_csv(f'data/monthly/{file_name}.csv',
+                    index_col='Date',parse_dates=True).fillna(0)
+    df = df.pct_change().replace([np.inf, -np.inf, np.nan], 0)
+
+    df = lagger(df,2,list(df))
+    df.index = df.index - pd.Timedelta('1 days')
+    df = df.resample('Q', convention='start').asfreq()
+
+    return df
 
 def calculate_residuals(model,X_train,X_test,y_train,y_test):
 
@@ -158,3 +224,32 @@ def simulate_X(T_train,T_test,simul_dict):
     X_test = np.column_stack(X_test)
 
     return X_train,X_test
+
+
+def generate_y(T_train,T_test,X_train,X_test,Prct_relevant=Prct_relevant,Spec=Spec):
+    theta1=0.1*np.ones(Spec['nbvar'])
+    theta2=-0.05*np.ones(Spec['nbvar'])
+
+
+
+    #Betas
+    bt= np.random.binomial(1, Prct_relevant, Spec['nbvar'])*np.random.normal(0,1,Spec['nbvar'])
+    WM = weights_midas_beta(np.r_[theta1,theta2],bt, Spec)
+
+    ##Add beta0 and phi
+    W = np.r_[WM,b0,phi]
+
+    #Adding a column of one in the covariates matrix
+    if b0 is not None:
+        X_train = np.c_[X_train, np.ones(T_train)]
+        X_test = np.c_[X_test,np.ones(T_test)]
+
+    # #Computing Y
+    Yreg=X_train.dot(W)
+    Yfor=X_test.dot(W)
+
+    # DGP from gaussian noise
+    y_train=Yreg+np.random.normal(mu,sigma,T_train) # In-sample Y
+    y_test=Yfor+np.random.normal(mu,sigma,T_test) # Out-of-sample Y
+
+    return y_train,y_test,X_train,X_test,bt

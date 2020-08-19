@@ -1,5 +1,6 @@
 import numpy as np
 
+
 sigma=np.sqrt(0.15)
 
 
@@ -7,6 +8,10 @@ sigma=np.sqrt(0.15)
 #Location parameter
 mu=0
 #Scale parameter
+
+#Intercpet
+b0=.5
+phi=[]
 
 #In-sample size and out-of-sample size
 T_train=200
@@ -63,3 +68,18 @@ Spec['almon']=1
 Spec['Averaging']=0
 Spec['betaFc']=0
 Spec['nbvar']=Spec['daily']+Spec['monthly']
+
+"""
+######################### temporary variables ###########################
+# This should be automatic in the future
+
+Spec['daily'] = 0 # number of days in the period
+Spec['Kd']=0 # number of days in the period
+Spec['monthly'] = 40 #3
+Spec['Km']= 3 #40
+Spec['quarterly'] = 65
+Spec['nbvar'] = Spec['daily']+ Spec['monthly'] + Spec['quarterly']
+Spec['Kq']= 1
+
+##################################################################################################
+"""

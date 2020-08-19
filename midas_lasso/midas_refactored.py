@@ -2,10 +2,11 @@ import math
 import numpy as np
 import statsmodels.api as sm
 import matplotlib.pyplot as plt
-from utils import Constuct_Mat_DataFreqLag_WG, simulate_X, weights_midas_beta, store_results
+import pandas as pd
+from utils import Constuct_Mat_DataFreqLag_WG, simulate_X, weights_midas_beta, store_results, generate_y
 from midas_model import MidasLasso
-from variables import *
-
+from variables import mu,sigma,Prct_relevant,Spec,T_train,T_test,simul_dict,Nbvar,b0,phi
+from utils import load_data
 
 np.random.seed(42)
 
@@ -22,28 +23,20 @@ Nbirrelevant=Spec['nbvar']-Nbrelevant
 
 X_train, X_test = simulate_X(T_train,T_test,simul_dict)
 #Construction Y
-theta1=0.1*np.ones(Spec['nbvar'])
-theta2=-0.05*np.ones(Spec['nbvar'])
 
-#Intercpet
-b0=.5
-phi=[]
+y_train,y_test,X_train,X_test,bt = generate_y(T_train,T_test,X_train,X_test)
 
-#Betas
+
+######################### temporary variables ###########################
+"""
+X_train, X_test, y_train, y_test = load_data('PETR3',10,file_name_monthly='ipea_ibge_pmc')
+T_test = X_test.shape[0]
+T_train = X_train.shape[0]
 bt= np.random.binomial(1, Prct_relevant, Spec['nbvar'])*np.random.normal(0,1,Spec['nbvar'])
-WM = weights_midas_beta(np.r_[theta1,theta2],bt, Spec)
+"""
+##################################################################################################
 
-##Add beta0 and phi
-W = np.r_[WM,b0,phi]
-
-#Adding a column of one in the covariates matrix
-if b0 is not None:
-    X_train = np.c_[X_train, np.ones(T_train)]
-    X_test = np.c_[X_test,np.ones(T_test)]
-
-# #Computing Y
-Yreg=X_train.dot(W)
-Yfor=X_test.dot(W)
+onRelevant=np.where(np.abs(bt)>1e-8)[0] #Relevant betas
 
 #### LASSO Specifications
 # Parameter (lambda)
@@ -52,21 +45,13 @@ lambda_par=[0,1] # <-- Here is a range for a loop
 norme=np.r_[0,np.ones(len(lambda_par)-1)] # <-- same size than the lambda_par vector
 
 # Number of models to simulate
-Mdl=100
-M={}
-m=1
 
-# DGP from gaussian noise
-y_train=Yreg+np.random.normal(mu,sigma,T_train) # In-sample Y
-y_test=Yfor+np.random.normal(mu,sigma,T_test) # Out-of-sample Y
-Relevant=np.where(np.abs(bt)>1e-8)[0] #Relevant betas
+
 
 # loop on parameters lambda_par
 results = []
 for i,lambda_value in enumerate(lambda_par):
     #display
-    print('# variables '+str(Nbvar))
-    print('model no. ' +str(m))
     print('lambda= ' +str(lambda_par[i]))
 
     # LASSO technical specifications
@@ -93,18 +78,23 @@ for i,lambda_value in enumerate(lambda_par):
 
     #Computing fitted values
 
+    print(y_train,model.predict(X_train))
+
     R = store_results(xopt,X_train,X_test,y_train,y_test,LO['lambda'],model)
 
     results.append(R)
 
 
 #Plot the difference
+
 R0 = results[0]
+print(results[0]['MSE_train'], results[0]['MSE_test'])
+print(results[1]['MSE_train'], results[1]['MSE_test'])
 range = np.arange(1,len(R0['bt_simul'])+1)
-print(R0['th_simul'])
-print(R0['bt_simul'])
-print(len(bt))
-print(len(R0['bt_simul']))
+#print(R0['th_simul'])
+#print(R0['bt_simul'])
+#print(len(bt))
+#print(len(R0['bt_simul']))
 
 fig=plt.figure()
 ax=fig.add_axes([0,0,1,1])
