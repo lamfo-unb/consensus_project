@@ -69,18 +69,17 @@ Spec['Averaging']=0
 Spec['betaFc']=0
 Spec['nbvar']=Spec['daily']+Spec['monthly']
 
-"""
+
 ######################### temporary variables ###########################
 # This should be automatic in the future
 
 Spec['daily'] = 0 # number of daily variables
-Spec['Kd']=0 # number of days in the period
+Spec['Kd']=21 # number of days in the period
 Spec['monthly'] = 40 # number of monthly variables
 Spec['Km']= 3 # number of months in the period
 Spec['quarterly'] = 65 # number of quarterly variables
 Spec['Kq']= 1 # number of quarters in the period
 Spec['nbvar'] = Spec['daily']+ Spec['monthly'] + Spec['quarterly']
-
-
-##################################################################################################
 """
+"""
+##################################################################################################

@@ -6,12 +6,12 @@ import pandas as pd
 from utils import Constuct_Mat_DataFreqLag_WG, simulate_X, weights_midas_beta, store_results, generate_y
 from midas_model import MidasLasso
 from variables import mu,sigma,Prct_relevant,Spec,T_train,T_test,simul_dict,Nbvar,b0,phi
-from utils import load_data
+from utils import load_data, naive_prediction
 
 np.random.seed(42)
 
 
-
+"""
 #Relevant features
 Nbrelevant=math.floor(Prct_relevant*Spec['nbvar'])
 #Non relevant features
@@ -25,15 +25,15 @@ X_train, X_test = simulate_X(T_train,T_test,simul_dict)
 #Construction Y
 
 y_train,y_test,X_train,X_test,bt = generate_y(T_train,T_test,X_train,X_test)
-
+"""
 
 ######################### temporary variables ###########################
-"""
-X_train, X_test, y_train, y_test = load_data('PETR3',10,file_name_monthly='ipea_ibge_pmc')
+
+X_train, X_test, y_train, y_test = load_data('PETR3',15,file_name_monthly='ipea_ibge_pmc')
 T_test = X_test.shape[0]
 T_train = X_train.shape[0]
 bt= np.random.binomial(1, Prct_relevant, Spec['nbvar'])*np.random.normal(0,1,Spec['nbvar'])
-"""
+Nbrelevant = Spec['nbvar']
 ##################################################################################################
 
 onRelevant=np.where(np.abs(bt)>1e-8)[0] #Relevant betas
@@ -44,7 +44,7 @@ lambda_par=[0,1] # <-- Here is a range for a loop
 #Norm (e.g. if norme=1 it's the LASSO, norme=2 it's the ridge,... )
 norme=np.r_[0,np.ones(len(lambda_par)-1)] # <-- same size than the lambda_par vector
 
-# Number of models to simulate
+VERBOSE = True
 
 
 
@@ -87,14 +87,23 @@ for i,lambda_value in enumerate(lambda_par):
 
 #Plot the difference
 
-R0 = results[0]
-print(results[0]['MSE_train'], results[0]['MSE_test'])
-print(results[1]['MSE_train'], results[1]['MSE_test'])
-range = np.arange(1,len(R0['bt_simul'])+1)
+if VERBOSE:
+    
+    print("Results for normal midas \n MSE train = {:.2f} \
+    , MSE test = {:.2f}".format(results[0]['MSE_train'], results[0]['MSE_test']))
+    print("Results for normal midas \n MSE train = {:.2f} \
+    , MSE test = {:.2f}".format(results[1]['MSE_train'], results[1]['MSE_test']))
+
+    print("Results for naive prediction MSE train = {:.2f}\
+    , MSE test {:.2f}".format(naive_prediction(y_train),naive_prediction(y_test)))
+
 #print(R0['th_simul'])
 #print(R0['bt_simul'])
 #print(len(bt))
 #print(len(R0['bt_simul']))
+"""
+R0 = results[0]
+range = np.arange(1,len(R0['bt_simul'])+1)
 
 fig=plt.figure()
 ax=fig.add_axes([0,0,1,1])
@@ -104,7 +113,7 @@ ax.set_xlabel('Range')
 ax.set_ylabel('Betas')
 ax.set_title('MIDAS')
 plt.show()
-
+"""
 
 
 

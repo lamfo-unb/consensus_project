@@ -2,13 +2,34 @@ import numpy as np
 import pandas as pd
 import statsmodels.api as sm
 from variables import sigma, Spec, mu, b0, phi, Prct_relevant
+from typing import Tuple, Union, Any, List, Dict
+
+def naive_prediction(
+    y_test:np.array) -> float:
+    """
+    Return the MSE naive prediction for y
+    y_{t-1} = y_t
+    """
+    yhat = np.concatenate((np.zeros(1),y_test[:-1]))
+    
+    return np.sqrt(np.sum(np.square(yhat-y_test)))
 
 
-
-def read_ticker(ticker):
+def read_ticker(
+    ticker:str) -> pd.DataFrame:
     """ 
     Reads ticker and returns X's and y's according to target column and 
     testing length
+
+    Inputs
+    ------
+    ticker : company ticker
+
+    Returns
+    ------
+    df : pandas dataframe with the percentual change of
+    each indicator in the result
+
     """
     df = pd.read_csv(f'data/consolidate/{ticker}.csv',
                     index_col='Unnamed: 0',parse_dates=True).fillna(0)
@@ -20,9 +41,23 @@ def read_ticker(ticker):
 
 
 
-def load_data(ticker,T_test,file_name_monthly,y_col='Lucro/Prejuízo do Período'):
+def load_data(
+    ticker:str,T_test:int,file_name_monthly:str,
+    y_col='Lucro/Prejuízo do Período'
+    )-> Tuple[np.array,np.array,np.array,np.array]:
     """ 
-    Loads data from target company and merges with data from IPEA
+    Load data from target company and merge with data from IPEA
+
+    Inputs
+    ------
+    ticker : company ticker
+    T_test : number of testing periods
+    file_name_monthly : name of the file with monthly data
+    y_col : target column name
+    Returns
+    ------
+    X_train, X_test, y_train, y_test : input/output data
+
     """
     df_monthly = read_ipea(file_name_monthly)
     df_quarterly = read_ticker(ticker)
@@ -41,9 +76,21 @@ def load_data(ticker,T_test,file_name_monthly,y_col='Lucro/Prejuízo do Período
     return X_train.values, X_test.values, y_train.values, y_test.values
 
 
-def lagger(dataset, n_lags, price_columns):
+def lagger(
+    dataset:pd.DataFrame, n_lags:int,
+    price_columns : Union[str,List[str]]) -> pd.DataFrame:
     """
-    Creates columns of time lags
+    Create columns of time lags
+
+    Inputs
+    ------
+    dataset : dataframe to lag 
+    n_lags : number of time lags
+    price_columns :
+    y_col : target column name(s)
+    Returns
+    ------
+    result : lagged dataframe
     """
     from toolz.curried import reduce
     df = reduce(
@@ -55,9 +102,19 @@ def lagger(dataset, n_lags, price_columns):
     return result[sorted(result.columns)]
 
 
-def read_ipea(file_name):
+def read_ipea(
+    file_name:str) -> pd.DataFrame:
     """
-    Reads data downloaded from IPEA and returns it on quarterly frequency
+    Read data downloaded from IPEA and return it on quarterly frequency
+
+    Inputs
+    ------
+    file_name : file name
+
+    Returns
+    ------
+    result : dataframe
+    
     """
     df = pd.read_csv(f'data/monthly/{file_name}.csv',
                     index_col='Date',parse_dates=True).fillna(0)
@@ -69,7 +126,28 @@ def read_ipea(file_name):
 
     return df
 
-def calculate_residuals(model,X_train,X_test,y_train,y_test):
+def calculate_residuals(
+    model:Any,X_train:np.array,
+    X_test:np.array,y_train:np.array,
+    y_test:np.array) -> Tuple[float,float]:
+
+    """
+    Calculate residuals
+
+    Inputs
+    ------
+    model : Midas model
+    X_train : training input
+    X_test : testing input
+    y_train : training output
+    y_test : testing output
+
+    Returns
+    ------
+    mse_train : mean square error from training
+    mse_test : mean square error from testing
+
+    """
 
     y_train_pred = model.predict(X_train)
     y_test_pred = model.predict(X_test)
@@ -80,8 +158,29 @@ def calculate_residuals(model,X_train,X_test,y_train,y_test):
 
     return mse_train, mse_test
 
-def store_results(xopt,X_train,X_test,y_train,y_test,L0,model):
+def store_results(
+    xopt:np.array,X_train:np.array,
+    X_test:np.array,y_train:np.array,
+    y_test:np.array,L0:Dict,
+    model:Any) -> Dict:
 
+    """
+    Organize results in a dictionary 
+
+    Inputs
+    ------
+    xopt : optimized weights
+    X_train : training input
+    X_test : testing input
+    y_train : training output
+    y_test : testing output
+    model : Midas model
+
+    Returns
+    ------
+    R : dictionary with results
+
+    """
     R={}
     R['lambda']=L0
     R['th_simul']=xopt[0:2*model.settings['nbvar']]
@@ -103,9 +202,19 @@ def store_results(xopt,X_train,X_test,y_train,y_test,L0,model):
 
     return R
 
-def create_time_dicts(Spc):
+def create_time_dicts(
+    Spc:Dict) -> List[Dict]:
     """
-    Creates a dict with daily, monthly and quarterly information
+    Create a dict with daily, monthly and quarterly information
+
+    Inputs
+    ------
+    Spc : dict with number of variables for each time frequency
+
+    Returns
+    ------
+    out_list : list of dicts with each frequency configuration
+
     """
     abreviations = ['Kd','Km','Kq']
     daily_range = Spc['daily']
@@ -125,9 +234,11 @@ def create_time_dicts(Spc):
 
     return out_list
 
-def weights_midas_beta(th, bt, Spc):
+def weights_midas_beta(
+    th:np.array, bt:np.array,
+    Spc:Dict) -> np.array:
     """
-    Constructs covariates matrix as defined by MIDAS weighting scheme
+    Construct covariates matrix as defined by MIDAS weighting scheme
 
     Inputs
     ------
@@ -137,7 +248,7 @@ def weights_midas_beta(th, bt, Spc):
 
     Returns
     -------
-    W : weights
+    W : MIDAS weights
 
     """
 
@@ -153,15 +264,19 @@ def weights_midas_beta(th, bt, Spc):
         for i in time_period['range']:
             if Spc['TwoParam']:
                 if Spc['almon']:
-                    W0=np.exp(th1[i]*time_period['k'] + th2[i]*np.square(time_period['k'])) / np.sum(np.exp(th1[i]*time_period['k'] + th2[i]*np.square(time_period['k'])))
+                    W0=np.exp(th1[i]*time_period['k'] + th2[i]*np.square(time_period['k'])) \
+                        / np.sum(np.exp(th1[i]*time_period['k'] + th2[i]*np.square(time_period['k'])))
                 elif Spc['betaFc']:
-                    W0=np.exp(th1[i]*time_period['k'] + th2[i]*np.square(time_period['k'])) / np.sum(np.exp(th1[i]*time_period['k'] + th2[i]*np.square(time_period['k'])))
+                    W0=np.exp(th1[i]*time_period['k'] + th2[i]*np.square(time_period['k'])) \
+                        / np.sum(np.exp(th1[i]*time_period['k'] + th2[i]*np.square(time_period['k'])))
             elif Spc['Averaging']:
                 W0=time_period['one']/time_period['kk']
             elif Spc['betaFc']:
-                W0=np.power(th2[i]*(1-time_period['w']),(th2[i]-1)) / sum(np.power(th2[i]*(1-time_period['w']),(th2[i]-1)))
+                W0=np.power(th2[i]*(1-time_period['w']),(th2[i]-1)) \
+                    / sum(np.power(th2[i]*(1-time_period['w']),(th2[i]-1)))
             elif Spc['betaFc_special']:
-                W0=th2[i]*time_period['w']*np.power((1-time_period['w']),(th2[i]-1))/sum(th2[i]*time_period['w']*np.power((1-time_period['w']),(th2[i]-1)))
+                W0=th2[i]*time_period['w']*np.power((1-time_period['w']),(th2[i]-1))\
+                    / sum(th2[i]*time_period['w']*np.power((1-time_period['w']),(th2[i]-1)))
             if i==0:
                 W = W0*bt[i]
                 ww = W0

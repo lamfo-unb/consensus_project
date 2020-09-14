@@ -1,19 +1,33 @@
 import math
 import numpy as np
 from utils import weights_midas_beta
+from typing import Dict, List
 import scipy.optimize as op
 
 
 class MidasLasso():
 
-    def __init__(self,settings):
+    def __init__(self,settings:Dict[int,bool]):
         self.settings = settings
         self.param_init=np.zeros(settings['nbvar']*3+1)
         self.W = None
         
 
-    def _apply_settings(self,param):
-        """ Apply settings to the weights """
+    def _apply_settings(
+        self,param:np.array
+        ) -> np.array:
+        """ 
+        Create the MIDAS model's weights by
+        applying the defined settings
+
+        Inputs
+        ------
+        param : array that containts beta, phi and theta values
+
+        Returns
+        ------
+        W : mean error
+        """
 
         b0 = None
         phi = None
@@ -43,8 +57,27 @@ class MidasLasso():
 
 
 
-    def SSE_midas_beta(self,param, x, y, L0=False):
+    def SSE_midas_beta(
+        self,param:np.array, x:np.array,
+        y:np.array, L0=False
+        ) -> float:
 
+        """
+        Calculate the mean square error of the MIDAS model
+
+        Inputs
+        ------
+        param : array that containts beta, phi and theta values
+        x : input shape (number of examples x number of features)
+        y : target shape (number of examples)
+        L0 : lambda parameters, either False (no lasso) or a dict with
+        mu and lambda values
+
+        Returns
+        ------
+        SSE : mean error
+
+        """
 
         W,bt = self._apply_settings(param)
 
@@ -75,7 +108,26 @@ class MidasLasso():
 
 
 
-    def fit(self,X_train, y_train,L0=False):
+    def fit(
+        self,X_train:np.array,
+        y_train:np.array,L0=False
+        ) -> np.array:
+        """
+        Learn the weights for the MIDAS model
+
+        Inputs
+        ------
+        X_train : input shape (number of examples x number of features)
+        y_train : target shape (number of examples)
+        L0 : lambda parameters, either False (no lasso) or a dict with
+        mu and lambda values
+
+        Returns
+        ------
+        xopt : learned weights (not the same as the MIDAS,
+        which are given by self.W)
+
+        """
 
         xopt =  op.fmin(self.SSE_midas_beta, self.param_init,args=(X_train, y_train, L0,), xtol=1e-4, ftol=1e-4, maxiter=100000, maxfun=100000)
 
@@ -83,5 +135,8 @@ class MidasLasso():
         self.W=np.r_[WM,xopt[-1]]
         return xopt
 
-    def predict(self,X_test):
+    def predict(
+        self,X_test:np.array
+        ) -> np.array:
+        """ Predict output given input """
         return np.dot(X_test,self.W)
