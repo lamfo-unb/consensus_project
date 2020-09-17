@@ -9,7 +9,7 @@ import zipfile
 import glob
 from PIL import Image
 from io import BytesIO
-from data_scraping import deathbycaptcha
+import deathbycaptcha
 import time
 import os
 
@@ -51,7 +51,7 @@ im.save('captcha.png')
 
 # Send the captcha to the DeathByCaptcha
 username = "pedrobsb"
-password = "********"
+password = "*****"
 
 # Send the captcha
 client = deathbycaptcha.SocketClient(username, password)

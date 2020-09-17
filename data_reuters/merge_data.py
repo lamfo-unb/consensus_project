@@ -76,10 +76,12 @@ def get_translation(df_fund, df_reuters,ticker,
     df_fund = clean_zero_columns(df_fund)
     dict_names = {}
     for column_fund in df_fund:
-        columns_reuters = df_reuters.corrwith(df_fund.loc[:,column_fund]).sort_values(ascending=False).index[0]
-        dict_names[columns_reuters] = column_fund
-        df_reuters.drop(columns=columns_reuters,inplace=True) # removes selected column
-
+        if df_reuters.corrwith(df_fund.loc[:,column_fund]).shape[0] > 0:
+            columns_reuters = df_reuters.corrwith(df_fund.loc[:,column_fund]).sort_values(ascending=False).index[0]
+            dict_names[columns_reuters] = column_fund
+            df_reuters.drop(columns=columns_reuters,inplace=True) # removes selected column
+        else:
+            print('No correlation!')
 
     return dict_names
 

@@ -1,3 +1,9 @@
+"""
+Runs the scrapping and concatenates the latest data with
+the consolidate data
+"""
+
+
 from scrapping import data_scrapping
 import pandas as pd
 import argparse
@@ -19,7 +25,6 @@ def join_old_new(df_latest,df_old):
     """
 
     row_mask = df_old.index[-1] < df_latest.index
-    print(row_mask)
     df_final = pd.concat((df_old,df_latest.loc[row_mask,:]))
 
 
@@ -48,7 +53,6 @@ def main():
                         help='Number of atempts to solve the captcha.')
        #Get arguments
     args = parser.parse_args()
-    #symbols = pd.read_csv(args.symbol)
     #Run the data_scraping scrapping
     fundamentus_dict = data_scrapping(args,save_data=False)
     folder_name = 'latest'
