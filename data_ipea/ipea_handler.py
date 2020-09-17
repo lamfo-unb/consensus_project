@@ -2,6 +2,8 @@ import pandas as pd
 import ipeadatapy as ipea
 import datetime as dt
 import pytz
+import pickle
+
 
 # para frequencias trimestrais = "Trimestral", para freqs mensais = "Mensal"
 
@@ -23,4 +25,6 @@ def ipea_feeder(freq, tema='Macroeconômico', pais='BRA', ano_update=2020, mes_u
     return q_df
 
 
-print(ipea_feeder("Mensal"))
+data = ipea_feeder("Trimestral")
+data.to_pickle("macro_trimestral.pkl")
+print(data)
