@@ -1,8 +1,10 @@
 import numpy as np
 import pandas as pd
 import statsmodels.api as sm
-from variables import sigma, Spec, mu, b0, phi, Prct_relevant
 from typing import Tuple, Union, Any, List, Dict
+
+
+
 
 def naive_prediction(
     y_test:np.array) -> float:
@@ -31,7 +33,7 @@ def read_ticker(
     each indicator in the result
 
     """
-    df = pd.read_csv(f'data/consolidate/{ticker}.csv',
+    df = pd.read_csv(f'../data/consolidate/{ticker}.csv',
                     index_col='Unnamed: 0',parse_dates=True).fillna(0)
 
     df = df.loc[:, (df != 0).any(axis=0)] # removing 0 columns
@@ -59,10 +61,17 @@ def load_data(
     X_train, X_test, y_train, y_test : input/output data
 
     """
-    df_monthly = read_ipea(file_name_monthly)
+
     df_quarterly = read_ticker(ticker)
 
-    df_all = pd.concat([df_monthly,df_quarterly],join='inner',axis=1)
+    if file_name_monthly is None:
+        # if no monthly data, set df_monthly as empty df
+        df_monthly = pd.DataFrame() 
+        df_all = df_quarterly
+    else:
+        df_monthly = read_ipea(file_name_monthly)
+        df_all = pd.concat([df_monthly,df_quarterly],join='inner',axis=1)
+ 
 
     y_all = df_all.loc[:,y_col].copy()
     X_all = df_all.drop(columns=y_col)
@@ -73,7 +82,13 @@ def load_data(
     y_train = y_all[:-T_test]
     y_test = y_all[-T_test:]
 
-    return X_train.values, X_test.values, y_train.values, y_test.values
+    number_variables = {
+                        "quarterly" : df_quarterly.shape[1] - 1, #removing the target column
+                        "monthly" : df_monthly.shape[1]//3,
+                        "daily" : 0
+                        }
+
+    return X_train.values, X_test.values, y_train.values, y_test.values, number_variables
 
 
 def lagger(
@@ -116,7 +131,7 @@ def read_ipea(
     result : dataframe
     
     """
-    df = pd.read_csv(f'data/monthly/{file_name}.csv',
+    df = pd.read_csv(f'../data/monthly/{file_name}.csv',
                     index_col='Date',parse_dates=True).fillna(0)
     df = df.pct_change().replace([np.inf, -np.inf, np.nan], 0)
 
@@ -181,6 +196,7 @@ def store_results(
     R : dictionary with results
 
     """
+    sigma=np.sqrt(0.15)
     R={}
     R['lambda']=L0
     R['th_simul']=xopt[0:2*model.settings['nbvar']]
@@ -237,6 +253,7 @@ def create_time_dicts(
 def weights_midas_beta(
     th:np.array, bt:np.array,
     Spc:Dict) -> np.array:
+
     """
     Construct covariates matrix as defined by MIDAS weighting scheme
 
@@ -341,12 +358,14 @@ def simulate_X(T_train,T_test,simul_dict):
     return X_train,X_test
 
 
-def generate_y(T_train,T_test,X_train,X_test,Prct_relevant=Prct_relevant,Spec=Spec):
+def generate_y(T_train,T_test,X_train,X_test,Prct_relevant,Spec):
     theta1=0.1*np.ones(Spec['nbvar'])
     theta2=-0.05*np.ones(Spec['nbvar'])
-
-
-
+    phi = []
+    b0 = 0.5
+    mu=0
+    sigma=np.sqrt(0.15)
+    
     #Betas
     bt= np.random.binomial(1, Prct_relevant, Spec['nbvar'])*np.random.normal(0,1,Spec['nbvar'])
     WM = weights_midas_beta(np.r_[theta1,theta2],bt, Spec)
@@ -355,9 +374,9 @@ def generate_y(T_train,T_test,X_train,X_test,Prct_relevant=Prct_relevant,Spec=Sp
     W = np.r_[WM,b0,phi]
 
     #Adding a column of one in the covariates matrix
-    if b0 is not None:
-        X_train = np.c_[X_train, np.ones(T_train)]
-        X_test = np.c_[X_test,np.ones(T_test)]
+    
+    X_train = np.c_[X_train, np.ones(T_train)]
+    X_test = np.c_[X_test,np.ones(T_test)]
 
     # #Computing Y
     Yreg=X_train.dot(W)
