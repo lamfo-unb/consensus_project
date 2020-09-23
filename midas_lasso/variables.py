@@ -81,8 +81,14 @@ def load_market_data(
     else:
         file_name_monthly = real_data_dict['monthly']
 
-    X_train, X_test, y_train, y_test, number_variables = load_data(ticker,
-    T_test = T_test,file_name_monthly=file_name_monthly)
+    if len(real_data_dict['quarterly']) == 0:
+        file_name_quarterly = None
+    else:
+        file_name_quarterly = real_data_dict['quarterly']
+
+    X_train, X_test, y_train, y_test, number_variables = load_data(
+    ticker,T_test = T_test,file_name_quarterly=file_name_quarterly,
+    file_name_monthly=file_name_monthly)
 
     return X_train, X_test, y_train, y_test, number_variables
 

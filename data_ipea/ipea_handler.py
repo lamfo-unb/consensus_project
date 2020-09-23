@@ -24,7 +24,9 @@ def ipea_feeder(freq, tema='Macroeconômico', pais='BRA', ano_update=2020, mes_u
 
     return q_df
 
-
-data = ipea_feeder("Trimestral")
-data.to_pickle("macro_trimestral.pkl")
-print(data)
+dict_freq = {'Trimestral':'quarterly','Mensal':'monthly'}
+for freq in dict_freq:
+    print('Loading {}'.format(dict_freq[freq]))
+    data = ipea_feeder(freq).T
+    data.index.name = 'Date'
+    data.to_csv(f'../{dict_freq[freq]}/test_{freq}.csv')

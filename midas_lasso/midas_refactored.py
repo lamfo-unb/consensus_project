@@ -13,9 +13,11 @@ import argparse
 
 def main():
     parser = argparse.ArgumentParser()
-    parser.add_argument('-t','--ticker',
+    parser.add_argument('-t','--ticker', default = 'PETR3',
                         help='Stock ticker.')
-    parser.add_argument('-m','--monthly', default = '',
+    parser.add_argument('-q','--quarterly', default = 'test_quarterly',
+                        help='CSV file with monthly data.')
+    parser.add_argument('-m','--monthly', default = 'test_monthly',
                         help='CSV file with monthly data.')
     parser.add_argument('-o', '--out_of_sample', type=int, default=15,
                         help='Testing length.')
@@ -43,7 +45,8 @@ def train_midas(args):
     #Norm (e.g. if norme=1 it's the LASSO, norme=2 it's the ridge,... )
     norme=np.r_[0,np.ones(len(lambda_par)-1)] # <-- same size than the lambda_par vector
 
-    real_data_dict = {'ticker':args.ticker,'monthly':args.monthly,'T_test':args.out_of_sample}
+    real_data_dict = {'ticker':args.ticker,'monthly':args.monthly,
+    'quarterly':args.quarterly,'T_test':args.out_of_sample}
     X_train, X_test, y_train, y_test, Spec = load_variables(real_data_dict=real_data_dict, simulation_mode=SIMULATION)
 
 

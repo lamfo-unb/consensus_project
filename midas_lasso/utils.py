@@ -45,7 +45,7 @@ def read_ticker(
 
 def load_data(
     ticker:str,T_test:int,file_name_monthly:str,
-    y_col='Lucro/Prejuízo do Período'
+    file_name_quarterly:str,y_col='Lucro/Prejuízo do Período'
     )-> Tuple[np.array,np.array,np.array,np.array]:
     """ 
     Load data from target company and merge with data from IPEA
@@ -55,6 +55,7 @@ def load_data(
     ticker : company ticker
     T_test : number of testing periods
     file_name_monthly : name of the file with monthly data
+    file_name_quarterly : name of the file with quarterly data
     y_col : target column name
     Returns
     ------
@@ -64,12 +65,24 @@ def load_data(
 
     df_quarterly = read_ticker(ticker)
 
-    if file_name_monthly is None:
+    if file_name_monthly is None and file_name_quarterly is None:
         # if no monthly data, set df_monthly as empty df
         df_monthly = pd.DataFrame() 
         df_all = df_quarterly
+    elif file_name_quarterly is None:
+        df_monthly = read_ipea(file_name_monthly,time_freq='monthly')
+        # TODO remove this
+        df_monthly = df_monthly.iloc[:,:120]
+        df_all = pd.concat([df_monthly,df_quarterly],join='inner',axis=1)
     else:
-        df_monthly = read_ipea(file_name_monthly)
+        df_monthly = read_ipea(file_name_monthly,time_freq='monthly')
+        # TODO remove this
+        df_monthly = df_monthly.iloc[:,:120]
+        if file_name_quarterly != None:
+            ipea_quarterly = read_ipea(file_name_quarterly,time_freq='quarterly')
+            # TODO remove this
+            ipea_quarterly = ipea_quarterly.iloc[:,:10]
+            df_quarterly = pd.concat([ipea_quarterly,df_quarterly],join='inner',axis=1)
         df_all = pd.concat([df_monthly,df_quarterly],join='inner',axis=1)
  
 
@@ -118,20 +131,22 @@ def lagger(
 
 
 def read_ipea(
-    file_name:str) -> pd.DataFrame:
+    file_name:str,time_freq:str
+    ) -> pd.DataFrame:
     """
     Read data downloaded from IPEA and return it on quarterly frequency
 
     Inputs
     ------
     file_name : file name
+    time_freq : either monthly or quarterly
 
     Returns
     ------
     result : dataframe
     
     """
-    df = pd.read_csv(f'../data/monthly/{file_name}.csv',
+    df = pd.read_csv(f'../data/{time_freq}/{file_name}.csv',
                     index_col='Date',parse_dates=True).fillna(0)
     df = df.pct_change().replace([np.inf, -np.inf, np.nan], 0)
 
